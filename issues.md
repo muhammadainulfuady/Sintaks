@@ -13,19 +13,19 @@ Implementasi learning structure (Learning Path → Module → Lesson) dengan pro
   - `show()` — get learning path detail with modules & progress (`GET /learning-paths/{slug}`)
   - `enroll()` — enroll to learning path (`POST /learning-paths/{slug}/enroll`)
   - `getModules()` — list modules in learning path (`GET /learning-paths/{slug}/modules`)
-- [ ] Create ModuleController dengan methods:
+- [x] Create ModuleController dengan methods:
   - `show()` — get module detail with lessons & quiz status (`GET /modules/{slug}`)
   - `getLessons()` — list lessons in module (`GET /modules/{slug}/lessons`)
-- [ ] Create LessonController dengan methods:
+- [x] Create LessonController dengan methods:
   - `show()` — get lesson content (`GET /lessons/{slug}`)
   - `complete()` — mark lesson as completed, calculate module progress, award XP (`POST /lessons/{slug}/complete`)
-- [ ] Create NoteController dengan methods:
+- [x] Create NoteController dengan methods:
   - `index()` — list user's notes (`GET /notes`)
   - `storeForLesson()` — create note dari lesson (`POST /lessons/{slug}/notes`)
   - `destroy()` — delete note milik sendiri (`DELETE /notes/{id}`)
 - [ ] Create NovaController & NovaService dengan methods:
   - `chat()` — send message to NOVA AI tutor with lesson/module context (`POST /nova/chat`)
-- [ ] Create ProgressController & XPController dengan methods:
+- [x] Create ProgressController & XPController dengan methods:
   - `getProgressSummary()` — get dashboard progress summary (`GET /progress`)
   - `getModuleProgress()` — get progress per module (`GET /progress/modules`)
   - `getXpHistory()` — get total XP & transaction history (`GET /xp`)
@@ -47,7 +47,7 @@ Implementasi learning structure (Learning Path → Module → Lesson) dengan pro
   - `GET /progress`
   - `GET /progress/modules`
   - `GET /xp`
-- [ ] Create seeders untuk test learning paths, modules, lessons
+- [x] Create seeders untuk test learning paths, modules, lessons
 
 ## Acceptance Criteria
 - Learning path hierarchy berfungsi dengan baik (path → modules → lessons)
