@@ -44,13 +44,13 @@ class QuizController extends Controller
             ->where('is_active', true)
             ->with(['questions' => function ($q) {
                 $q->where('is_active', true)
-                  ->with(['options' => function ($opt) {
-                      // Eksklusi is_correct demi keamanan data (per RULES.md & api-docs.json)
-                      $opt->select(['id', 'quiz_question_id', 'label', 'content', 'order']);
-                  }, 'testCases' => function ($tc) {
-                      // Hanya kirim public test cases (is_hidden = 0)
-                      $tc->where('is_hidden', false)->select(['id', 'quiz_question_id', 'input', 'expected_output', 'order']);
-                  }]);
+                    ->with(['options' => function ($opt) {
+                        // Eksklusi is_correct demi keamanan data (per RULES.md & api-docs.json)
+                        $opt->select(['id', 'quiz_question_id', 'label', 'content', 'order']);
+                    }, 'testCases' => function ($tc) {
+                        // Hanya kirim public test cases (is_hidden = 0)
+                        $tc->where('is_hidden', false)->select(['id', 'quiz_question_id', 'input', 'expected_output', 'order']);
+                    }]);
             }])
             ->first();
 
