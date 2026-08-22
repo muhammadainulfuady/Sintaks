@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LearningPathController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\CommunityController;
 
@@ -26,3 +27,10 @@ Route::post('/communities/{id}/leave', [CommunityController::class, 'leave']);
 Route::get('/communities/{id}/members', [CommunityController::class, 'getMembers']);
 Route::get('/communities/{id}/messages', [CommunityController::class, 'getMessages']);
 Route::post('/communities/{id}/messages', [CommunityController::class, 'postMessage']);
+
+Route::middleware('auth:sanctum')->group(function () {
+	Route::get('/learning-paths', [LearningPathController::class, 'index']);
+	Route::get('/learning-paths/{slug}', [LearningPathController::class, 'show']);
+	Route::post('/learning-paths/{slug}/enroll', [LearningPathController::class, 'enroll']);
+	Route::get('/learning-paths/{slug}/modules', [LearningPathController::class, 'getModules']);
+});
