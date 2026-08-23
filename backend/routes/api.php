@@ -1,14 +1,30 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\QuizController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuizController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
 | API Routes — Sintaks Learning Platform
 |--------------------------------------------------------------------------
 */
+
+// Authentication & Profile Routes (Issue #1)
+Route::prefix('auth')->group(function (): void {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+});
+
+Route::middleware('auth:sanctum')->group(function (): void {
+    Route::get('/profile', [ProfileController::class, 'getProfile']);
+    Route::put('/profile', [ProfileController::class, 'updateProfile']);
+    Route::get('/profile/{username}', [ProfileController::class, 'getPublicProfile']);
+});
 
 // Quiz & Code Sandbox Routes (Issue #2)
 Route::get('/modules/{slug}/quiz', [QuizController::class, 'show']);
