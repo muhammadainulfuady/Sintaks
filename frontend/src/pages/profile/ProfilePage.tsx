@@ -34,7 +34,8 @@ export const ProfilePage: React.FC = () => {
         username,
         avatar: selectedAvatar,
       });
-      updateUser(res.data.user);
+      const userObj = (res.data as any)?.user || res.data;
+      updateUser(userObj);
       setMessage('Profil berhasil diperbarui!');
     } catch (err: any) {
       if (err.response?.data?.errors) {

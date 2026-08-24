@@ -34,13 +34,13 @@ export const authApi = {
     return res.data;
   },
 
-  getProfile: async (): Promise<ApiResponse<{ user: User }>> => {
-    const res = await api.get<ApiResponse<{ user: User }>>('/profile');
+  getProfile: async (): Promise<ApiResponse<User>> => {
+    const res = await api.get<ApiResponse<User>>('/profile');
     return res.data;
   },
 
-  updateProfile: async (data: { name?: string; username?: string; avatar?: string }): Promise<ApiResponse<{ user: User }>> => {
-    const res = await api.put<ApiResponse<{ user: User }>>('/profile', data);
+  updateProfile: async (data: { name?: string; username?: string; avatar?: string }): Promise<ApiResponse<User>> => {
+    const res = await api.put<ApiResponse<User>>('/profile', data);
     return res.data;
   },
 

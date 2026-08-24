@@ -29,10 +29,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (savedToken) {
         try {
           const res = await authApi.getProfile();
-          setUser(res.data.user);
-          localStorage.setItem('sintaks_user', JSON.stringify(res.data.user));
-        } catch {
-          // Token is invalid or expired
+          const userObj = (res.data as any)?.user || res.data;
+          if (userObj && userObj.id) {
+            setUser(userObj);
+            localStorage.setItem('sintaks_user', JSON.stringify(userObj));
+          } else {
+            throw new Error('Invalid user profile response');
+          }
+        } catch (err) {
+          console.error('initAuth failed:', err);
           setToken(null);
           setUser(null);
           localStorage.removeItem('sintaks_token');
