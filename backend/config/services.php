@@ -39,7 +39,7 @@ return [
         'provider' => env('NOVA_PROVIDER', 'gemini'),
         'gemini' => [
             'key' => env('GEMINI_API_KEY'),
-            'model' => env('GEMINI_MODEL', 'gemini-2.5-flash'),
+            'model' => env('GEMINI_MODEL', 'gemini-3.6-flash'),
             'base_url' => env('GEMINI_BASE_URL', 'https://generativelanguage.googleapis.com/v1beta'),
         ],
     ],

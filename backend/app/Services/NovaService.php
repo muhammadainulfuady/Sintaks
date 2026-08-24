@@ -82,7 +82,7 @@ class NovaService
     private function chatWithGemini(string $message, array $learningContext, array $history): string
     {
         $apiKey = config('services.nova.gemini.key');
-        $model = config('services.nova.gemini.model', 'gemini-2.5-flash');
+        $model = config('services.nova.gemini.model', 'gemini-3.6-flash');
         $baseUrl = rtrim(config('services.nova.gemini.base_url'), '/');
 
         if (!$apiKey || !$baseUrl) {
