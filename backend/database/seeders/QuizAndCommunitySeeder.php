@@ -28,8 +28,9 @@ class QuizAndCommunitySeeder extends Seeder
         $user3 = $users->firstWhere('email', 'citra@example.com') ?? $users[3] ?? $user1;
         $user4 = $users->firstWhere('email', 'dewi@example.com') ?? $users[4] ?? $user2;
 
-        // 2. Fetch Modules
+        // 2. Fetch Modules & Lessons
         $modules = DB::table('modules')->get();
+        $lessons = DB::table('lessons')->get();
 
         // Ensure at least 5 quizzes
         foreach ($modules->take(5) as $moduleIndex => $module) {
@@ -177,20 +178,24 @@ class QuizAndCommunitySeeder extends Seeder
             }
         }
 
-        // 4. Create 5 Notes
-        $notesData = [
-            ['title' => 'Catatan Indentasi Python', 'content' => 'Python wajib menggunakan 4 spasi untuk indentasi. Jangan campur tab dan spasi!'],
-            ['title' => 'Perbedaan List vs Tuple', 'content' => 'List bersifat mutable (bisa diubah), sedangkan Tuple bersifat immutable (tidak bisa diubah).'],
-            ['title' => 'Tips Perulangan For', 'content' => 'Gunakan range(start, stop, step) untuk mengontrol urutan angka pada for loop.'],
-            ['title' => 'Kunci Sukses Fungsi', 'content' => 'Selalu gunakan default argument di bagian akhir parameter fungsi.'],
-            ['title' => 'Konsep OOP Dasar', 'content' => 'Class adalah cetakan (blueprint), sedangkan Object adalah bentuk nyata (instance) dari class.'],
+        // 4. Create 5 Notes attached to lessons
+        $notesContents = [
+            'Python wajib menggunakan 4 spasi untuk indentasi. Jangan campur tab dan spasi!',
+            'List bersifat mutable (bisa diubah), sedangkan Tuple bersifat immutable (tidak bisa diubah).',
+            'Gunakan range(start, stop, step) untuk mengontrol urutan angka pada for loop.',
+            'Selalu gunakan default argument di bagian akhir parameter fungsi.',
+            'Class adalah cetakan (blueprint), sedangkan Object adalah bentuk nyata (instance) dari class.',
         ];
 
-        foreach ($notesData as $nIndex => $nData) {
+        foreach ($notesContents as $nIndex => $content) {
+            $targetLesson = $lessons[$nIndex % count($lessons)];
             Note::firstOrCreate(
-                ['title' => $nData['title'], 'user_id' => $user1->id],
                 [
-                    'content' => $nData['content'],
+                    'user_id' => $user1->id,
+                    'lesson_id' => $targetLesson->id,
+                ],
+                [
+                    'content' => $content,
                     'created_at' => now()->subDays($nIndex),
                 ]
             );
@@ -198,21 +203,26 @@ class QuizAndCommunitySeeder extends Seeder
 
         // 5. Create 5 XP Transactions
         $xpData = [
-            ['user' => $admin, 'amount' => 500, 'source' => 'lesson_completion', 'description' => 'Menyelesaikan Modul Python Fundamentals'],
-            ['user' => $user1, 'amount' => 150, 'source' => 'quiz_completion', 'description' => 'Lulus Quiz Python Fundamentals dengan nilai sempurna'],
-            ['user' => $user2, 'amount' => 100, 'source' => 'lesson_completion', 'description' => 'Menyelesaikan Pelajaran Operator Aritmatika'],
-            ['user' => $user3, 'amount' => 80, 'source' => 'quiz_completion', 'description' => 'Lulus Quiz Operator'],
-            ['user' => $user4, 'amount' => 50, 'source' => 'lesson_completion', 'description' => 'Menyelesaikan Pelajaran Apa itu Python'],
+            ['user' => $admin, 'amount' => 500, 'source_type' => 'lesson_completion', 'source_id' => 1, 'description' => 'Menyelesaikan Modul Python Fundamentals'],
+            ['user' => $user1, 'amount' => 150, 'source_type' => 'quiz_completion', 'source_id' => 1, 'description' => 'Lulus Quiz Python Fundamentals dengan nilai sempurna'],
+            ['user' => $user2, 'amount' => 100, 'source_type' => 'lesson_completion', 'source_id' => 2, 'description' => 'Menyelesaikan Pelajaran Operator Aritmatika'],
+            ['user' => $user3, 'amount' => 80, 'source_type' => 'quiz_completion', 'source_id' => 2, 'description' => 'Lulus Quiz Operator'],
+            ['user' => $user4, 'amount' => 50, 'source_type' => 'lesson_completion', 'source_id' => 3, 'description' => 'Menyelesaikan Pelajaran Apa itu Python'],
         ];
 
         foreach ($xpData as $xpItem) {
-            XPTransaction::create([
-                'user_id' => $xpItem['user']->id,
-                'amount' => $xpItem['amount'],
-                'source' => $xpItem['source'],
-                'description' => $xpItem['description'],
-                'created_at' => now(),
-            ]);
+            XPTransaction::firstOrCreate(
+                [
+                    'user_id' => $xpItem['user']->id,
+                    'source_type' => $xpItem['source_type'],
+                    'source_id' => $xpItem['source_id'],
+                ],
+                [
+                    'amount' => $xpItem['amount'],
+                    'description' => $xpItem['description'],
+                    'created_at' => now(),
+                ]
+            );
         }
     }
 }
