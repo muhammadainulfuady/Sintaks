@@ -4,6 +4,7 @@ import { AppLayout } from '../../components/layout/AppLayout';
 import { NOVAPanel } from '../../components/nova/NOVAPanel';
 import { learningApi } from '../../api/learning';
 import { notesApi } from '../../api/notes';
+import { useAuth } from '../../context/AuthContext';
 import { Lesson } from '../../types';
 import {
   CheckCircle2,
@@ -18,6 +19,7 @@ import {
 
 export const LessonDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { user, updateUser } = useAuth();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isCompleting, setIsCompleting] = useState(false);
@@ -35,8 +37,8 @@ export const LessonDetailPage: React.FC = () => {
       if (!slug) return;
       try {
         const res = await learningApi.getLesson(slug);
-        setLesson(res.data.lesson);
-        setIsCompleted(!!res.data.lesson.is_completed);
+        setLesson(res.data);
+        setIsCompleted(!!res.data.is_completed);
       } catch (err) {
         console.error('Failed to load lesson:', err);
       } finally {
@@ -53,7 +55,10 @@ export const LessonDetailPage: React.FC = () => {
     try {
       const res = await learningApi.completeLesson(slug);
       setIsCompleted(true);
-      setXpGained(res.data.xp_earned || 10);
+      setXpGained(res.data.xp_awarded || 10);
+      if (user) {
+        updateUser({ ...user, total_xp: res.data.total_xp });
+      }
     } catch (err) {
       console.error('Failed to complete lesson:', err);
     } finally {
@@ -133,7 +138,7 @@ export const LessonDetailPage: React.FC = () => {
             <div className="space-y-3 pb-6 border-b border-slate-100">
               <div className="flex items-center justify-between">
                 <span className="px-3 py-1 bg-indigo-50 text-indigo-700 font-semibold text-xs rounded-full border border-indigo-100">
-                  Materi Python
+                  Materi Pembelajaran
                 </span>
                 <div className="flex items-center gap-1 text-purple-600 font-bold text-xs bg-purple-50 px-2.5 py-1 rounded-full border border-purple-100">
                   <Zap size={14} className="fill-purple-600" />
@@ -157,7 +162,7 @@ export const LessonDetailPage: React.FC = () => {
                 <div className="flex items-center justify-between text-xs text-slate-500 font-semibold">
                   <span className="flex items-center gap-1.5 text-indigo-600">
                     <Code2 size={15} />
-                    <span>Contoh Kode Python:</span>
+                    <span>Contoh Kode:</span>
                   </span>
                 </div>
                 <div className="bg-slate-900 text-emerald-400 font-mono text-xs p-4 rounded-2xl border border-slate-800 shadow-md overflow-x-auto whitespace-pre">

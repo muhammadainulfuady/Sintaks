@@ -23,6 +23,7 @@ class LearningPathController extends Controller
             ->orderBy('order')
             ->get()
             ->each(function (LearningPath $learningPath) use ($userId): void {
+                $learningPath->setAttribute('total_modules', $learningPath->modules_count);
                 $learningPath->setAttribute(
                     'is_enrolled',
                     $userId !== null && $learningPath->users()->whereKey($userId)->exists()
@@ -80,7 +81,7 @@ class LearningPathController extends Controller
         ]);
     }
 
-    public function getModules(string $slug): JsonResponse
+    public function getModules(Request $request, string $slug): JsonResponse
     {
         $learningPath = LearningPath::query()
             ->where('slug', $slug)

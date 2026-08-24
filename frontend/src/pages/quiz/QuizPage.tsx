@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { PythonCodeEditor } from '../../components/editor/PythonCodeEditor';
 import { quizApi } from '../../api/quiz';
+import { useAuth } from '../../context/AuthContext';
 import { Quiz, QuizQuestion, QuizAttempt } from '../../types';
 import {
   ClipboardList,
@@ -16,12 +17,18 @@ import {
 
 export const QuizPage: React.FC = () => {
   const { moduleSlug } = useParams<{ moduleSlug: string }>();
+  const { user, updateUser } = useAuth();
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [attempt, setAttempt] = useState<QuizAttempt | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [feedback, setFeedback] = useState<{ is_correct: boolean; explanation?: string } | null>(null);
+  const [feedback, setFeedback] = useState<{
+    is_correct: boolean;
+    explanation?: string;
+    xp_awarded?: number;
+    total_xp?: number;
+  } | null>(null);
   const [isQuizFinished, setIsQuizFinished] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,11 +37,11 @@ export const QuizPage: React.FC = () => {
       if (!moduleSlug) return;
       try {
         const quizRes = await quizApi.getModuleQuiz(moduleSlug);
-        setQuiz(quizRes.data.quiz);
+        setQuiz(quizRes.data);
 
-        if (quizRes.data.quiz) {
-          const attemptRes = await quizApi.startAttempt(quizRes.data.quiz.id);
-          setAttempt(attemptRes.data.attempt);
+        if (quizRes.data) {
+          const attemptRes = await quizApi.startAttempt(quizRes.data.id);
+          setAttempt(attemptRes.data);
         }
       } catch (err) {
         console.error('Failed to load quiz:', err);
@@ -61,6 +68,9 @@ export const QuizPage: React.FC = () => {
         answerValue
       );
       setFeedback(res.data);
+      if (user && res.data.total_xp !== undefined) {
+        updateUser({ ...user, total_xp: res.data.total_xp });
+      }
     } catch (err) {
       console.error('Failed to submit answer:', err);
     } finally {
@@ -189,7 +199,7 @@ export const QuizPage: React.FC = () => {
                 {currentQuestion.options.map((opt) => {
                   const optionLabel = opt.label || String.fromCharCode(65 + (opt.order - 1));
                   const optionText = opt.content || opt.option_text || '';
-                  const answerVal = opt.label || opt.content || opt.order;
+                  const answerVal = opt.id;
                   const isSelected = selectedOption === answerVal;
 
                   return (
@@ -232,13 +242,14 @@ export const QuizPage: React.FC = () => {
                     <div className="grid grid-cols-2 gap-3">
                       {currentQuestion.options.map((opt) => {
                         const optText = opt.content || opt.option_text || '';
-                        const isSelected = selectedOption === optText;
+                        const answerVal = opt.id;
+                        const isSelected = selectedOption === answerVal;
                         return (
                           <button
                             key={opt.id}
                             onClick={() => {
-                              setSelectedOption(optText);
-                              handleSubmitAnswer(optText);
+                              setSelectedOption(answerVal);
+                              handleSubmitAnswer(answerVal);
                             }}
                             disabled={isSubmitting || !!feedback}
                             className={`p-3 rounded-xl border text-xs font-mono font-medium transition-all text-center ${

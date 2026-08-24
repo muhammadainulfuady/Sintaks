@@ -15,6 +15,7 @@ import { CommunityPage } from './pages/community/CommunityPage';
 import { CommunityDetailPage } from './pages/community/CommunityDetailPage';
 import { ProfilePage } from './pages/profile/ProfilePage';
 import { LeaderboardPage } from './pages/profile/LeaderboardPage';
+import { LandingPage } from './pages/landing/LandingPage';
 import { Loader2 } from 'lucide-react';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -38,7 +39,8 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 export const AppContent: React.FC = () => {
   return (
     <Routes>
-      {/* Public Auth Routes */}
+      {/* Public routes */}
+      <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
 
@@ -133,7 +135,7 @@ export const AppContent: React.FC = () => {
       />
 
       {/* Default fallback route */}
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };

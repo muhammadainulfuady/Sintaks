@@ -2,13 +2,18 @@ import api from './axios';
 import { ApiResponse, Community, CommunityMessage } from '../types';
 
 export const communityApi = {
-  getCommunities: async (): Promise<ApiResponse<{ communities: Community[] }>> => {
-    const res = await api.get<ApiResponse<{ communities: Community[] }>>('/communities');
+  getCommunities: async (): Promise<ApiResponse<Community[]>> => {
+    const res = await api.get<ApiResponse<Community[]>>('/communities');
     return res.data;
   },
 
-  getCommunity: async (id: number): Promise<ApiResponse<{ community: Community }>> => {
-    const res = await api.get<ApiResponse<{ community: Community }>>(`/communities/${id}`);
+  getCommunity: async (id: number): Promise<ApiResponse<Community>> => {
+    const res = await api.get<ApiResponse<Community>>(`/communities/${id}`);
+    return res.data;
+  },
+
+  createCommunity: async (name: string, description: string): Promise<ApiResponse<Community>> => {
+    const res = await api.post<ApiResponse<Community>>('/communities', { name, description });
     return res.data;
   },
 

@@ -129,6 +129,91 @@ class QuizAndCommunitySeeder extends Seeder
             QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q5->id, 'label' => 'D'], ['content' => 'toString()', 'is_correct' => false, 'order' => 4]);
         }
 
+        // Quiz yang relevan untuk setiap modul pada alur Python.
+        $quizBlueprints = [
+            'python-fundamentals' => [
+                ['Python memakai apa untuk menandai blok kode?', 'Indentasi (umumnya 4 spasi) menentukan blok kode Python.', ['Kurung kurawal', 'Indentasi', 'Titik koma', 'Tag HTML'], 1],
+                ['Tipe data untuk teks di Python adalah ...', 'str digunakan untuk menyimpan teks.', ['int', 'float', 'str', 'bool'], 2],
+                ['Fungsi untuk menampilkan nilai ke layar adalah ...', 'print() mencetak nilai ke konsol.', ['show()', 'echo()', 'console()', 'print()'], 3],
+                ['Manakah nama variabel yang mengikuti gaya Python?', 'snake_case digunakan untuk nama variabel Python.', ['nama_siswa', 'nama-siswa', 'Nama Siswa', '2nama'], 0],
+                ['Nilai Boolean yang benar adalah ...', 'Boolean Python ditulis True atau False dengan huruf awal kapital.', ['true', 'TRUE', 'True', 'yes'], 2],
+            ],
+            'operator-dan-string' => [
+                ['Hasil dari 17 % 5 adalah ...', '% menghasilkan sisa pembagian.', ['2', '3', '5', '17'], 0],
+                ['Operator untuk membandingkan dua nilai adalah ...', '== membandingkan nilai, sedangkan = memberi nilai.', ['=', '==', '===', ':='], 1],
+                ['input() mengembalikan data bertipe ...', 'Hasil input() selalu string sebelum dikonversi.', ['int', 'float', 'str', 'bool'], 2],
+                ['Method untuk membuat string menjadi huruf besar adalah ...', 'upper() menghasilkan string dengan huruf kapital.', ['capitalize()', 'upper()', 'large()', 'titlecase()'], 1],
+                ['Operator logika yang benar jika kedua kondisi benar adalah ...', 'and hanya True ketika semua kondisi bernilai True.', ['or', 'not', 'and', 'in'], 2],
+            ],
+            'conditional' => [
+                ['Kata kunci untuk kondisi pertama adalah ...', 'if memulai percabangan di Python.', ['when', 'if', 'case', 'check'], 1],
+                ['Blok yang dijalankan jika kondisi if salah adalah ...', 'else menjadi alternatif ketika if bernilai False.', ['elif', 'other', 'else', 'default'], 2],
+                ['elif digunakan untuk ...', 'elif memeriksa kondisi tambahan.', ['mengulang kode', 'kondisi tambahan', 'membuat fungsi', 'menghapus nilai'], 1],
+                ['Tanda yang wajib ditulis setelah kondisi if adalah ...', 'Titik dua menandai awal blok kondisi.', [';', ':', ',', '.'], 1],
+                ['Jika nilai = 80, hasil nilai >= 75 adalah ...', '80 memang lebih besar atau sama dengan 75.', ['True', 'False', '80', 'Error'], 0],
+            ],
+            'collections' => [
+                ['Koleksi yang bisa diubah setelah dibuat adalah ...', 'List bersifat mutable.', ['tuple', 'list', 'string', 'int'], 1],
+                ['Koleksi yang menyimpan nilai unik adalah ...', 'Set otomatis menghapus nilai duplikat.', ['list', 'tuple', 'set', 'str'], 2],
+                ['Sintaks list menggunakan ...', 'List ditulis di antara tanda kurung siku.', ['()', '[]', '{}', '<>'], 1],
+                ['Index terakhir sebuah list dapat diakses dengan ...', 'Index negatif -1 menunjuk item terakhir.', ['list[0]', 'list[1]', 'list[-1]', 'list[last]'], 2],
+                ['Tuple paling cocok digunakan untuk ...', 'Tuple tepat ketika data tidak boleh berubah.', ['data yang sering diubah', 'data yang tetap', 'nilai unik saja', 'teks panjang'], 1],
+            ],
+            'loop' => [
+                ['range(3) menghasilkan angka ...', 'range(3) menghasilkan 0, 1, dan 2.', ['1, 2, 3', '0, 1, 2', '0, 1, 2, 3', '3 saja'], 1],
+                ['Loop yang cocok saat jumlah pengulangan belum diketahui adalah ...', 'while berjalan selama kondisinya True.', ['for', 'while', 'if', 'def'], 1],
+                ['break berfungsi untuk ...', 'break menghentikan loop terdekat.', ['memulai loop', 'menghentikan loop', 'melewati satu iterasi', 'mencetak data'], 1],
+                ['continue berfungsi untuk ...', 'continue melewati sisa kode di iterasi saat ini.', ['menghentikan program', 'melewati iterasi saat ini', 'mengulang dari awal', 'menghapus loop'], 1],
+                ['Agar while tidak infinite loop, kita perlu ...', 'Nilai pengontrol kondisi harus diperbarui.', ['menambah print()', 'mengubah nilai pengontrol', 'menggunakan list', 'menulis elif'], 1],
+            ],
+            'functions' => [
+                ['Kata kunci untuk membuat function Python adalah ...', 'def digunakan untuk mendefinisikan function.', ['func', 'function', 'def', 'define'], 2],
+                ['Data yang diterima function disebut ...', 'Parameter didefinisikan pada function.', ['output', 'parameter', 'loop', 'index'], 1],
+                ['Kata kunci untuk mengirim hasil function adalah ...', 'return mengirimkan nilai kepada pemanggil function.', ['print', 'yielding', 'return', 'send'], 2],
+                ['Parameter dengan nilai cadangan disebut ...', 'Default parameter dipakai jika argumen tidak dikirim.', ['global parameter', 'default parameter', 'loop parameter', 'empty parameter'], 1],
+                ['Function membantu kode menjadi ...', 'Function membuat kode dapat digunakan ulang.', ['lebih acak', 'sulit diuji', 'dapat digunakan ulang', 'selalu lebih panjang'], 2],
+            ],
+            'dictionary' => [
+                ['Dictionary menyimpan data dalam bentuk ...', 'Dictionary menyimpan pasangan key dan value.', ['index dan loop', 'key dan value', 'baris dan kolom', 'huruf dan angka'], 1],
+                ['Key pada dictionary harus ...', 'Setiap key dictionary harus unik.', ['selalu angka', 'unik', 'selalu string', 'berurutan'], 1],
+                ['Method aman untuk mengambil value dari key yang mungkin tidak ada adalah ...', 'get() dapat mengembalikan nilai cadangan tanpa error.', ['find()', 'value()', 'get()', 'read()'], 2],
+                ['Method dictionary untuk loop key dan value sekaligus adalah ...', 'items() menghasilkan pasangan key dan value.', ['keys()', 'values()', 'items()', 'pairs()'], 2],
+                ['Sintaks untuk menambah kelas ke profil adalah ...', "Penugasan ke key baru menambahkan data dictionary.", ["profil.add('kelas')", "profil['kelas'] = '10A'", "profil.kelas('10A')", "append(profil, 'kelas')"], 1],
+            ],
+        ];
+
+        $moduleBySlug = $modules->keyBy('slug');
+        foreach ($quizBlueprints as $moduleSlug => $questions) {
+            $module = $moduleBySlug->get($moduleSlug);
+            if ($module === null) {
+                continue;
+            }
+
+            $quiz = Quiz::updateOrCreate(
+                ['module_id' => $module->id],
+                ['title' => "Quiz: {$module->title}", 'description' => "Uji pemahamanmu tentang {$module->title}.", 'passing_score' => 70, 'is_active' => true]
+            );
+
+            foreach ($questions as $order => [$questionText, $explanation, $options, $correctIndex]) {
+                $question = QuizQuestion::updateOrCreate(
+                    ['quiz_id' => $quiz->id, 'order' => $order + 1],
+                    ['type' => 'theory', 'question' => $questionText, 'explanation' => $explanation, 'language' => 'python', 'starter_code' => null, 'code_template' => null, 'is_active' => true]
+                );
+
+                QuizQuestionOption::where('quiz_question_id', $question->id)->delete();
+                TestCase::where('quiz_question_id', $question->id)->delete();
+                foreach ($options as $optionOrder => $option) {
+                    QuizQuestionOption::create([
+                        'quiz_question_id' => $question->id,
+                        'label' => chr(65 + $optionOrder),
+                        'content' => $option,
+                        'is_correct' => $optionOrder === $correctIndex,
+                        'order' => $optionOrder + 1,
+                    ]);
+                }
+            }
+        }
+
         // 3. Create 5 Communities
         $communitiesData = [
             ['name' => 'Belajar Python Bareng', 'description' => 'Komunitas belajar Python dari dasar hingga mahir untuk pemula dan umum.', 'owner' => $admin],

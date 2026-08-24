@@ -12,95 +12,49 @@ class LearningSeeder extends Seeder
 {
     public function run(): void
     {
-        $learningPaths = [
-            [
-                'name' => 'Python Fundamentals',
-                'slug' => 'python',
-                'description' => 'Kuasai sintaks dasar, variabel, tipe data, kondisi, dan perulangan Python dari nol.',
-                'icon' => 'python_icon',
-                'order' => 1,
-            ],
-            [
-                'name' => 'Python Data Structures',
-                'slug' => 'python-data-structures',
-                'description' => 'Pelajari struktur data penting: List, Tuple, Dictionary, Set, dan manipulasi String.',
-                'icon' => 'data_structure_icon',
-                'order' => 2,
-            ],
-            [
-                'name' => 'Object Oriented Programming (OOP)',
-                'slug' => 'python-oop',
-                'description' => 'Pahami konsep Class, Object, Inheritance, Polymorphism, dan Encapsulation di Python.',
-                'icon' => 'oop_icon',
-                'order' => 3,
-            ],
-            [
-                'name' => 'Automation & Scripting',
-                'slug' => 'python-automation',
-                'description' => 'Otomatisasi tugas sehari-hari, membaca file CSV/JSON, dan melakukan web scraping.',
-                'icon' => 'automation_icon',
-                'order' => 4,
-            ],
-            [
-                'name' => 'Data Science & AI Essentials',
-                'slug' => 'python-data-science',
-                'description' => 'Pengenalan analisis data menggunakan NumPy, Pandas, dan integrasi AI Prompting.',
-                'icon' => 'ai_ds_icon',
-                'order' => 5,
-            ],
-        ];
+        // Sembunyikan alur placeholder yang belum memiliki materi lengkap.
+        LearningPath::query()->where('slug', '!=', 'python')->update(['is_active' => false]);
 
-        $createdPaths = [];
-        foreach ($learningPaths as $pathData) {
-            $createdPaths[] = LearningPath::firstOrCreate(
-                ['slug' => $pathData['slug']],
-                $pathData + ['is_active' => true]
-            );
-        }
-
-        $mainPath = $createdPaths[0]; // Python Fundamentals
+        $path = LearningPath::updateOrCreate(
+            ['slug' => 'python'],
+            [
+                'name' => 'Belajar Python dari Dasar',
+                'description' => 'Kurikulum Python bertahap untuk pemula: sintaks, data, percabangan, koleksi, perulangan, function, hingga dictionary.',
+                'icon' => 'python_icon', 'order' => 1, 'is_active' => true,
+            ]
+        );
 
         $modules = [
-            ['title' => 'Python Fundamentals', 'slug' => 'python-fundamentals', 'description' => 'Pengenalan sejarah, aturan sintaks, dan cara kerja Python.'],
-            ['title' => 'Operator & Ekpresi', 'slug' => 'operator', 'description' => 'Operator aritmatika, perbandingan, logika, dan penugasan.'],
-            ['title' => 'Pengondisian (Conditional)', 'slug' => 'conditional', 'description' => 'Kontrol alur program dengan statement if, elif, dan else.'],
-            ['title' => 'Perulangan (Looping)', 'slug' => 'loop', 'description' => 'Mengulang instruksi secara efisien menggunakan for dan while.'],
-            ['title' => 'Fungsi & Modularisasi', 'slug' => 'functions', 'description' => 'Membuat fungsi kustom, argumen, return value, dan lambda.'],
+            ['slug' => 'python-fundamentals', 'title' => '1. Dasar-Dasar Python', 'description' => 'Kenali Python, sintaks, variabel, tipe data, dan output.'],
+            ['slug' => 'operator-dan-string', 'title' => '2. Operator & String', 'description' => 'Gunakan operator, input pengguna, dan string untuk mengolah data sederhana.'],
+            ['slug' => 'conditional', 'title' => '3. Percabangan', 'description' => 'Buat program mengambil keputusan dengan if, elif, else, dan operator logika.'],
+            ['slug' => 'collections', 'title' => '4. List, Tuple & Set', 'description' => 'Simpan banyak nilai dan pilih struktur koleksi yang tepat.'],
+            ['slug' => 'loop', 'title' => '5. Perulangan', 'description' => 'Otomatiskan pekerjaan berulang menggunakan for, while, break, dan continue.'],
+            ['slug' => 'functions', 'title' => '6. Function', 'description' => 'Rapikan program menjadi function yang dapat digunakan kembali.'],
+            ['slug' => 'dictionary', 'title' => '7. Dictionary', 'description' => 'Kelola data berpasangan key-value dan gabungkan dengan konsep Python lain.'],
         ];
 
         $createdModules = [];
-        foreach ($modules as $order => $moduleData) {
-            $createdModules[] = Module::firstOrCreate(
-                ['learning_path_id' => $mainPath->id, 'slug' => $moduleData['slug']],
-                $moduleData + ['order' => $order + 1, 'is_active' => true]
+        foreach ($modules as $index => $moduleData) {
+            $createdModules[] = Module::updateOrCreate(
+                ['learning_path_id' => $path->id, 'slug' => $moduleData['slug']],
+                $moduleData + ['order' => $index + 1, 'is_active' => true]
             );
         }
 
         foreach ($createdModules as $index => $module) {
-            if ($index > 0) {
-                $module->prerequisites()->syncWithoutDetaching([$createdModules[$index - 1]->id]);
-            }
+            $module->prerequisites()->sync($index === 0 ? [] : [$createdModules[$index - 1]->id]);
 
             foreach ($this->lessonsFor($module->slug) as $lessonOrder => $lessonData) {
-                $references = $lessonData['references'] ?? [];
-                unset($lessonData['references']);
-
-                $lesson = Lesson::firstOrCreate(
+                $lesson = Lesson::updateOrCreate(
                     ['module_id' => $module->id, 'slug' => $lessonData['slug']],
-                    $lessonData + [
-                        'order' => $lessonOrder + 1,
-                        'is_active' => true,
-                        'code_example' => $lessonData['code_example'] ?? "print('Hello, Python!')\n",
-                        'output_example' => $lessonData['output_example'] ?? "Hello, Python!\n",
-                    ]
+                    $lessonData + ['order' => $lessonOrder + 1, 'is_active' => true]
                 );
 
-                foreach ($references as $refOrder => $ref) {
-                    LessonReference::firstOrCreate(
-                        ['lesson_id' => $lesson->id, 'url' => $ref['url']],
-                        $ref + ['order' => $refOrder + 1]
-                    );
-                }
+                LessonReference::updateOrCreate(
+                    ['lesson_id' => $lesson->id, 'url' => 'https://docs.python.org/3/tutorial/'],
+                    ['title' => 'Dokumentasi Python', 'order' => 1]
+                );
             }
         }
     }
@@ -109,59 +63,54 @@ class LearningSeeder extends Seeder
     {
         return match ($moduleSlug) {
             'python-fundamentals' => [
-                $this->lesson('apa-itu-python', 'Apa itu Python?', 'Python adalah bahasa pemrograman tingkat tinggi yang sangat populer karena sintaksnya yang bersih.', ['Sintaks bersih', 'Banyak library', 'Populer di AI & Data'], 'https://docs.python.org/3/tutorial/'),
-                $this->lesson('syntax-dasar', 'Syntax Dasar', 'Aturan penulisan kode di Python tidak menggunakan tanda kurung kurawal, melainkan menggunakan indentasi spasi.', ['Indentasi wajib 4 spasi', 'Case sensitive', 'Baris baru sebagai pemisah']),
-                $this->lesson('variable', 'Variable & Menyimpan Data', 'Variabel digunakan untuk menyimpan nilai data di memori.', ['Tidak perlu deklarasi tipe', 'Penamaan snake_case']),
-                $this->lesson('data-types', 'Tipe Data Dasar', 'Python memiliki tipe data bawaan seperti integer, float, string, dan boolean.', ['Integer (bilangan bulat)', 'Float (desimal)', 'String (teks)', 'Boolean (True/False)']),
-                $this->lesson('output-print', 'Menampilkan Output dengan print()', 'Fungsi print() digunakan untuk mencetak teks atau nilai variabel ke konsol.', ['print() otomatis menambah newline', 'Bisa mencetak multiple nilai dengan koma']),
+                $this->lesson('apa-itu-python', 'Apa itu Python?', 'Python adalah bahasa pemrograman yang mudah dibaca dan banyak dipakai untuk web, otomatisasi, data, dan AI.', ['Sintaks ringkas', 'Dijalankan oleh interpreter', 'Ekosistem library besar'], "print('Halo, Python!')", 'Halo, Python!'),
+                $this->lesson('syntax-dasar', 'Aturan Sintaks & Indentasi', 'Python memakai indentasi, biasanya empat spasi, untuk menandai blok kode.', ['Python case-sensitive', 'Akhiri kondisi dengan :', 'Jangan campur tab dan spasi'], "if True:\n    print('Indentasi benar')", 'Indentasi benar'),
+                $this->lesson('variable', 'Variabel', 'Variabel adalah nama untuk menyimpan data. Python menentukan tipe data dari nilai yang diberikan.', ['Gunakan snake_case', 'Nama harus bermakna', 'Nilai dapat berubah'], "nama = 'Ayu'\numur = 18\nprint(nama, umur)", 'Ayu 18'),
+                $this->lesson('data-types', 'Tipe Data Dasar', 'Tipe dasar yang sering dipakai adalah int, float, str, dan bool.', ['int: bilangan bulat', 'float: desimal', 'str: teks', 'bool: True atau False'], "nilai = 92.5\nlulus = True\nprint(type(nilai).__name__, type(lulus).__name__)", 'float bool'),
+                $this->lesson('output-print', 'Output dengan print()', 'print() menampilkan teks atau nilai ke layar. Gunakan f-string untuk teks dinamis.', ['Koma mencetak beberapa nilai', 'F-string memakai awalan f'], "nama = 'Rani'\nprint(f'Halo, {nama}!')", 'Halo, Rani!'),
             ],
-            'operator' => [
-                $this->lesson('arithmetic', 'Operator Aritmatika', 'Operator untuk perhitungan matematika seperti +, -, *, /, %, **, //.', ['+ Penjumlahan', '- Pengurangan', '* Perkalian', '/ Pembagian']),
-                $this->lesson('comparison', 'Operator Perbandingan', 'Operator untuk membandingkan dua nilai yang menghasilkan True atau False.', ['== Sama dengan', '!= Tidak sama dengan', '> Lebih besar', '< Lebih kecil']),
-                $this->lesson('logical', 'Operator Logika', 'Operator and, or, dan not untuk menggabungkan pernyataan kondisi.', ['and (kedua harus True)', 'or (salah satu True)', 'not (membalikkan hasil)']),
-                $this->lesson('assignment', 'Operator Penugasan', 'Operator untuk memberikan nilai ke variabel secara langsung atau singkat (=, +=, -=).', ['= Assignment', '+= Add and assign', '-= Subtract and assign']),
-                $this->lesson('membership', 'Operator Keanggotaan (in)', 'Operator in dan not in untuk memeriksa apakah suatu nilai ada di dalam deretan data.', ['in (memeriksa keberadaan)', 'not in (memeriksa ketidakberadaan)']),
+            'operator-dan-string' => [
+                $this->lesson('operator-aritmatika', 'Operator Aritmatika', 'Gunakan +, -, *, /, //, %, dan ** untuk menghitung.', ['// pembagian bulat', '% sisa bagi', '** pangkat'], "total = 17 + 8\nsisa = 17 % 5\nprint(total, sisa)", '25 2'),
+                $this->lesson('operator-perbandingan', 'Operator Perbandingan & Logika', 'Perbandingan menghasilkan True atau False. and, or, dan not menggabungkan kondisi.', ['== membandingkan nilai', 'and: semua benar', 'or: salah satu benar'], "umur = 18\nprint(umur >= 17 and umur < 60)", 'True'),
+                $this->lesson('input-pengguna', 'Menerima Input', 'input() selalu menghasilkan string. Gunakan int() atau float() saat membutuhkan angka.', ['input() mengembalikan str', 'Konversi tipe bila diperlukan'], "nama = input('Nama: ')\nprint(f'Halo, {nama}!')", 'Contoh input Dika: Halo, Dika!'),
+                $this->lesson('string-dasar', 'Mengolah String', 'String adalah teks di dalam tanda kutip. Kamu dapat mengakses karakter dan memakai method string.', ['Index pertama adalah 0', 'upper() membuat huruf kapital', 'strip() menghapus spasi tepi'], "teks = 'Python'\nprint(teks[0], teks.upper())", 'P PYTHON'),
             ],
             'conditional' => [
-                $this->lesson('if-statement', 'Pengondisian if', 'Struktur kontrol dasar untuk mengeksekusi blok kode jika kondisi True.', ['Kondisi bernilai Boolean', 'Wajib menggunakan indentasi']),
-                $this->lesson('else-statement', 'Pengondisian else', 'Dijalankan ketika kondisi pada statement if sebelumnya bernilai False.', ['Eksekusi alternatif', 'Tanpa syarat tambahan']),
-                $this->lesson('elif-statement', 'Pengondisian elif', 'Digunakan untuk menguji beberapa kondisi alternatif secara berurutan.', ['Singkatan dari else if', 'Bisa digunakan beberapa kali']),
-                $this->lesson('nested-conditional', 'Pengondisian Bersarang', 'Memasukkan struktur if di dalam blok if lainnya untuk logika yang lebih kompleks.', ['Perhatikan kedalaman indentasi']),
-                $this->lesson('ternary-operator', 'Ternary Operator', 'Cara singkat menuliskan kondisional sederhana dalam satu baris kode.', ['Sintaks: value_if_true if condition else value_if_false']),
+                $this->lesson('if-statement', 'Kondisi if', 'Blok if dijalankan hanya ketika kondisinya bernilai True.', ['Akhiri kondisi dengan :', 'Isi blok harus diindentasi'], "nilai = 80\nif nilai >= 75:\n    print('Lulus')", 'Lulus'),
+                $this->lesson('if-else', 'Kondisi if-else', 'else menyediakan aksi alternatif bila kondisi if bernilai False.', ['else tidak memiliki kondisi', 'Satu blok saja yang dijalankan'], "umur = 15\nif umur >= 17:\n    print('Boleh membuat KTP')\nelse:\n    print('Belum cukup umur')", 'Belum cukup umur'),
+                $this->lesson('elif-statement', 'Kondisi elif', 'elif memeriksa kondisi tambahan dari atas ke bawah.', ['Boleh lebih dari satu elif', 'Urutkan kondisi dengan baik'], "nilai = 85\nif nilai >= 90:\n    print('A')\nelif nilai >= 80:\n    print('B')\nelse:\n    print('C')", 'B'),
+                $this->lesson('conditional-practice', 'Latihan Percabangan', 'Gabungkan perbandingan dan logika untuk membuat keputusan yang jelas.', ['Ternary cocok untuk kondisi sederhana', 'Pilih nama variabel yang jelas'], "saldo = 50000\nharga = 30000\nprint('Beli' if saldo >= harga else 'Saldo kurang')", 'Beli'),
+            ],
+            'collections' => [
+                $this->lesson('list-dasar', 'List', 'List menyimpan banyak nilai berurutan dan dapat diubah.', ['List ditulis dengan []', 'append() menambah item', 'Index dimulai dari 0'], "buah = ['apel', 'mangga']\nbuah.append('jeruk')\nprint(buah)", "['apel', 'mangga', 'jeruk']"),
+                $this->lesson('list-slicing', 'Index & Slicing List', 'Gunakan index untuk satu item dan slicing untuk mengambil sebagian list.', ['list[-1] item terakhir', 'Batas akhir slicing tidak ikut diambil'], "angka = [10, 20, 30, 40]\nprint(angka[1:3])", '[20, 30]'),
+                $this->lesson('tuple-dasar', 'Tuple', 'Tuple mirip list tetapi tidak dapat diubah setelah dibuat.', ['Tuple ditulis dengan ()', 'Cocok untuk data tetap'], "koordinat = (6, 9)\nprint(koordinat[0])", '6'),
+                $this->lesson('set-dasar', 'Set', 'Set menyimpan nilai unik tanpa urutan tetap.', ['Set ditulis dengan {}', 'Duplikat otomatis dihapus', 'Set tidak mendukung index'], "angka = {1, 2, 2, 3}\nprint(len(angka))", '3'),
             ],
             'loop' => [
-                $this->lesson('for-loop', 'Perulangan For', 'Mengulang eksekusi kode untuk setiap item dalam himpunan data seperti range(), list, atau string.', ['Mengiterasi elemen', 'Kombinasi dengan range()']),
-                $this->lesson('while-loop', 'Perulangan While', 'Mengulang eksekusi kode selama kondisi bernilai True.', ['Perhatikan infinite loop', 'Update variabel pengontrol']),
-                $this->lesson('break-statement', 'Pemberhentian dengan break', 'Menghentikan secara paksa perulangan sebelum iterasi selesai.', ['Keluar dari loop terdekat']),
-                $this->lesson('continue-statement', 'Melompati dengan continue', 'Melompati sisa instruksi di iterasi saat ini dan lanjut ke iterasi berikutnya.', ['Skip iterasi tertentu']),
-                $this->lesson('else-in-loop', 'Blok else pada Loop', 'Dijalankan setelah perulangan selesai secara normal tanpa interupsi break.', ['Fitur unik Python']),
+                $this->lesson('for-range', 'For dengan range()', 'for mengulang blok kode untuk setiap item. range(n) menghasilkan angka dari 0 sampai n-1.', ['range(start, stop, step)', 'Variabel loop berubah setiap iterasi'], "for angka in range(1, 4):\n    print(angka)", "1\n2\n3"),
+                $this->lesson('for-collection', 'For pada Koleksi', 'for dapat langsung mengunjungi setiap item di list, string, tuple, atau dictionary.', ['Tidak perlu mengatur index manual', 'Gunakan nama variabel yang jelas'], "warna = ['merah', 'biru']\nfor item in warna:\n    print(item)", "merah\nbiru"),
+                $this->lesson('while-loop', 'While Loop', 'while berjalan selama kondisi bernilai True. Ubah nilai pengontrol agar tidak menjadi infinite loop.', ['Siapkan nilai awal', 'Ubah pengontrol di dalam loop'], "nomor = 1\nwhile nomor <= 3:\n    print(nomor)\n    nomor += 1", "1\n2\n3"),
+                $this->lesson('break-continue', 'break & continue', 'break menghentikan loop, sedangkan continue melewati sisa proses pada iterasi sekarang.', ['break keluar dari loop', 'continue lanjut ke iterasi berikutnya'], "for angka in range(5):\n    if angka == 2:\n        continue\n    print(angka)", "0\n1\n3\n4"),
             ],
             'functions' => [
-                $this->lesson('def-function', 'Mendefinisikan Fungsi (def)', 'Fungsi adalah blok kode terorganisir yang digunakan kembali dengan kata kunci def.', ['Reusability kode', 'Nama fungsi intuitif']),
-                $this->lesson('function-parameters', 'Parameter & Argumen', 'Mengirimkan nilai input ke dalam fungsi melalui parameter.', ['Parameter posisional', 'Keyword arguments']),
-                $this->lesson('return-statement', 'Mengembalikan Nilai (return)', 'Mengembalikan hasil eksekusi fungsi ke pemanggil.', ['Mengakhiri eksekusi fungsi', 'Bisa return multiple values']),
-                $this->lesson('default-parameters', 'Default Parameter Values', 'Memberikan nilai bawaan pada parameter jika argumen tidak diberikan saat dipanggil.', ['Mencegah error missing argument']),
-                $this->lesson('lambda-function', 'Fungsi Lambda (Anonymous)', 'Fungsi kecil tanpa nama yang ditulis dalam satu baris.', ['Sintaks: lambda params: expression']),
+                $this->lesson('def-function', 'Membuat Function', 'Function adalah blok kode bernama yang dapat dipanggil berkali-kali dengan def.', ['Nama function sebaiknya kata kerja', 'Isi function harus diindentasi'], "def sapa():\n    print('Selamat belajar!')\n\nsapa()", 'Selamat belajar!'),
+                $this->lesson('function-parameters', 'Parameter & Argumen', 'Parameter menerima data dari pemanggil function; argumen adalah nilai yang dikirimkan.', ['Parameter ada di dalam ()', 'Argumen dapat posisi atau keyword'], "def sapa(nama):\n    print(f'Halo, {nama}!')\n\nsapa('Nadia')", 'Halo, Nadia!'),
+                $this->lesson('return-function', 'Nilai Kembali dengan return', 'return mengirimkan hasil function kepada pemanggil agar dapat dipakai kembali.', ['Kode setelah return tidak dijalankan', 'Tanpa return hasilnya None'], "def luas_persegi(sisi):\n    return sisi * sisi\n\nprint(luas_persegi(4))", '16'),
+                $this->lesson('default-parameters', 'Default Parameter', 'Default parameter memberi nilai cadangan ketika argumen tidak dikirimkan.', ['Default ditulis setelah parameter wajib', 'Nilai default dapat dioverride'], "def sapa(nama, salam='Halo'):\n    print(f'{salam}, {nama}!')\n\nsapa('Bima')", 'Halo, Bima!'),
+            ],
+            'dictionary' => [
+                $this->lesson('dictionary-dasar', 'Membuat Dictionary', 'Dictionary menyimpan data dalam pasangan key dan value.', ['Dictionary ditulis dengan {}', 'Key harus unik', 'Value dapat beragam tipe'], "siswa = {'nama': 'Ayu', 'nilai': 90}\nprint(siswa['nama'])", 'Ayu'),
+                $this->lesson('dictionary-access', 'Mengakses & Mengubah Dictionary', 'Ambil value memakai key. get() aman ketika key mungkin belum tersedia.', ['data[key] error jika key tidak ada', 'get(key, default) memberi cadangan'], "profil = {'nama': 'Raka'}\nprofil['kelas'] = '10A'\nprint(profil.get('kelas'))", '10A'),
+                $this->lesson('dictionary-loop', 'Loop Dictionary', 'Gunakan items() untuk membaca key dan value sekaligus di dalam loop.', ['keys() memberi semua key', 'values() memberi semua value', 'items() memberi key dan value'], "nilai = {'Ana': 90, 'Budi': 80}\nfor nama, skor in nilai.items():\n    print(nama, skor)", "Ana 90\nBudi 80"),
+                $this->lesson('dictionary-practice', 'Latihan: Data Sederhana', 'Gabungkan dictionary, conditional, dan function untuk mengolah data yang lebih terstruktur.', ['Pilih key yang konsisten', 'Pisahkan logika ke function'], "def status_siswa(siswa):\n    return 'Lulus' if siswa['nilai'] >= 75 else 'Belum lulus'\n\nprint(status_siswa({'nama': 'Sita', 'nilai': 82}))", 'Lulus'),
             ],
             default => [],
         };
     }
 
-    private function lesson(string $slug, string $title, string $explanation, array $keyPoints = [], ?string $referenceUrl = null): array
+    private function lesson(string $slug, string $title, string $explanation, array $keyPoints, string $code, string $output): array
     {
-        $lesson = [
-            'slug' => $slug,
-            'title' => $title,
-            'explanation' => $explanation,
-            'key_points' => $keyPoints,
-        ];
-
-        if ($referenceUrl !== null) {
-            $lesson['references'] = [
-                ['title' => "Dokumentasi Resmi {$title}", 'url' => $referenceUrl],
-            ];
-        }
-
-        return $lesson;
+        return ['slug' => $slug, 'title' => $title, 'explanation' => $explanation, 'key_points' => $keyPoints, 'code_example' => $code, 'output_example' => $output];
     }
 }

@@ -5,6 +5,15 @@ import { learningApi } from '../../api/learning';
 import { LearningPath } from '../../types';
 import { BookOpen, ArrowRight, Loader2, Sparkles } from 'lucide-react';
 
+const pythonLearningPath: LearningPath = {
+  id: 0,
+  name: 'Belajar Python dari Dasar',
+  slug: 'python',
+  description: 'Mulai perjalanan Python-mu dari sintaks dasar hingga function dan dictionary.',
+  total_modules: 7,
+  level: 'Pemula',
+};
+
 export const LearningPathsPage: React.FC = () => {
   const [paths, setPaths] = useState<LearningPath[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -13,9 +22,11 @@ export const LearningPathsPage: React.FC = () => {
     const fetchPaths = async () => {
       try {
         const res = await learningApi.getLearningPaths();
-        setPaths(res.data.learning_paths || []);
+        setPaths(res.data?.length ? res.data : [pythonLearningPath]);
       } catch (err) {
         console.error('Failed to load learning paths:', err);
+        // Tetap beri jalan masuk ke kurikulum jika API sedang tidak tersedia.
+        setPaths([pythonLearningPath]);
       } finally {
         setIsLoading(false);
       }
@@ -76,13 +87,13 @@ export const LearningPathsPage: React.FC = () => {
 
                 <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between">
                   <span className="text-xs font-semibold text-slate-400">
-                    Bahasa: Python 3.x
+                    {path.total_modules || 0} Modul
                   </span>
                   <Link
                     to={`/learning-paths/${path.slug}`}
                     className="px-5 py-2.5 bg-indigo-600 group-hover:bg-indigo-700 text-white font-sans font-semibold text-xs rounded-xl transition-all shadow-md flex items-center gap-2"
                   >
-                    <span>Lihat Detail Alur</span>
+                    <span>Mulai Belajar</span>
                     <ArrowRight size={16} />
                   </Link>
                 </div>

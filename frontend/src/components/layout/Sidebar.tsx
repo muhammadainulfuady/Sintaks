@@ -17,7 +17,7 @@ export const Sidebar: React.FC = () => {
 
   const navItems = [
     { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { label: 'Learning Paths', path: '/learning-paths', icon: BookOpen },
+    { label: 'Pembelajaran', path: '/learning-paths', icon: BookOpen },
     { label: 'Catatan Saya', path: '/notes', icon: Bookmark },
     { label: 'Komunitas', path: '/community', icon: Users },
     { label: 'Leaderboard', path: '/leaderboard', icon: Zap },

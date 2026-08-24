@@ -82,7 +82,7 @@ class NovaService
     private function chatWithGemini(string $message, array $learningContext, array $history): string
     {
         $apiKey = config('services.nova.gemini.key');
-        $model = config('services.nova.gemini.model', 'gemini-3.6-flash');
+        $model = config('services.nova.gemini.model', 'gemini-3.1-flash-lite');
         $baseUrl = rtrim(config('services.nova.gemini.base_url'), '/');
 
         if (!$apiKey || !$baseUrl) {
@@ -105,7 +105,8 @@ class NovaService
 
         $result = Http::timeout(30)
             ->acceptJson()
-            ->post("{$baseUrl}/models/{$model}:generateContent?key={$apiKey}", [
+            ->withHeaders(['x-goog-api-key' => $apiKey])
+            ->post("{$baseUrl}/models/{$model}:generateContent", [
                 'systemInstruction' => ['parts' => [['text' => $systemInstruction]]],
                 'contents' => $contents,
             ])

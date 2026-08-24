@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { authApi } from '../../api/auth';
-import { Code2, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
+import logoSintaks from '../../assets/logosintaks.png';
 
 export const RegisterPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -13,199 +14,73 @@ export const RegisterPage: React.FC = () => {
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [isLoading, setIsLoading] = useState(false);
-
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setGeneralError(null);
     setFieldErrors({});
-
     if (password !== passwordConfirmation) {
-      setFieldErrors({ password_confirmation: ['Konfirmasi password tidak sesuai dengan password.'] });
+      setFieldErrors({ password_confirmation: ['Konfirmasi password tidak sesuai.'] });
       return;
     }
-
     setIsLoading(true);
-
     try {
-      const res = await authApi.register(name, username, email, password, passwordConfirmation);
-      login(res.data.token, res.data.user);
+      const response = await authApi.register(name, username, email, password, passwordConfirmation);
+      login(response.data.token, response.data.user);
       navigate('/dashboard');
     } catch (err: any) {
-      if (err.response?.data?.errors) {
-        setFieldErrors(err.response.data.errors);
-        setGeneralError(err.response.data.message || 'Validasi gagal. Periksa kembali form Anda.');
-      } else {
-        setGeneralError(err.response?.data?.message || 'Pendaftaran gagal. Silakan coba lagi.');
-      }
+      setFieldErrors(err.response?.data?.errors || {});
+      setGeneralError(err.response?.data?.message || 'Pendaftaran gagal. Silakan coba lagi.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        {/* Brand Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-indigo-600 text-white mb-4 shadow-lg shadow-indigo-200">
-            <Code2 size={26} className="stroke-[2.5]" />
+    <main className="flex min-h-screen items-center justify-center bg-slate-100 p-4 sm:p-6">
+      <div className="grid w-full max-w-5xl overflow-hidden rounded-[2rem] bg-white shadow-2xl shadow-slate-300/60 lg:grid-cols-[1.05fr_1fr]">
+        <aside className="flex min-h-72 flex-col items-center justify-center bg-gradient-to-br from-indigo-600 to-violet-700 px-8 py-10 text-center text-white lg:min-h-full lg:rounded-br-[9rem]">
+          <img src={logoSintaks} alt="Logo Sintaks" className="h-16 w-16 rounded-2xl object-contain shadow-lg" />
+          <h1 className="mt-6 font-sans text-3xl font-extrabold sm:text-4xl">Selamat Datang!</h1>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-indigo-100">Sudah punya akun? Masuk untuk melanjutkan perjalanan belajarmu.</p>
+          <Link to="/login" className="mt-8 rounded-xl border border-white/70 px-9 py-3 text-xs font-bold tracking-wide text-white transition hover:bg-white hover:text-indigo-700">MASUK</Link>
+        </aside>
+
+        <section className="px-7 py-10 sm:px-12 lg:px-16 lg:py-14">
+          <div className="mx-auto max-w-sm">
+            <h2 className="font-sans text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">Buat Akun</h2>
+            <p className="mt-2 text-sm text-slate-500">Daftar menggunakan email dan password.</p>
+            {generalError && <div className="mt-6 flex gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-700"><AlertCircle size={16} className="shrink-0" />{generalError}</div>}
+            <form onSubmit={handleSubmit} className="mt-7 space-y-4">
+              <label className="block text-xs font-semibold text-slate-700">Nama
+                <input type="text" required value={name} onChange={(event) => setName(event.target.value)} placeholder="Nama lengkap" className={`mt-1.5 w-full rounded-xl border bg-slate-100 px-4 py-3 text-sm outline-none transition focus:ring-2 ${fieldErrors.name ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:border-indigo-500 focus:ring-indigo-100'}`} />
+                {fieldErrors.name && <span className="mt-1 block text-xs text-red-600">{fieldErrors.name[0]}</span>}
+              </label>
+              <label className="block text-xs font-semibold text-slate-700">Username
+                <input type="text" required value={username} onChange={(event) => setUsername(event.target.value)} placeholder="nama_pengguna" className={`mt-1.5 w-full rounded-xl border bg-slate-100 px-4 py-3 text-sm outline-none transition focus:ring-2 ${fieldErrors.username ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:border-indigo-500 focus:ring-indigo-100'}`} />
+                {fieldErrors.username && <span className="mt-1 block text-xs text-red-600">{fieldErrors.username[0]}</span>}
+              </label>
+              <label className="block text-xs font-semibold text-slate-700">Email
+                <input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="nama@email.com" className={`mt-1.5 w-full rounded-xl border bg-slate-100 px-4 py-3 text-sm outline-none transition focus:ring-2 ${fieldErrors.email ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:border-indigo-500 focus:ring-indigo-100'}`} />
+                {fieldErrors.email && <span className="mt-1 block text-xs text-red-600">{fieldErrors.email[0]}</span>}
+              </label>
+              <label className="block text-xs font-semibold text-slate-700">Password
+                <input type="password" required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Minimal 8 karakter" className={`mt-1.5 w-full rounded-xl border bg-slate-100 px-4 py-3 text-sm outline-none transition focus:ring-2 ${fieldErrors.password ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:border-indigo-500 focus:ring-indigo-100'}`} />
+                {fieldErrors.password && <span className="mt-1 block text-xs text-red-600">{fieldErrors.password[0]}</span>}
+              </label>
+              <label className="block text-xs font-semibold text-slate-700">Konfirmasi Password
+                <input type="password" required minLength={8} value={passwordConfirmation} onChange={(event) => setPasswordConfirmation(event.target.value)} placeholder="Ulangi password" className={`mt-1.5 w-full rounded-xl border bg-slate-100 px-4 py-3 text-sm outline-none transition focus:ring-2 ${fieldErrors.password_confirmation ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:border-indigo-500 focus:ring-indigo-100'}`} />
+                {fieldErrors.password_confirmation && <span className="mt-1 block text-xs text-red-600">{fieldErrors.password_confirmation[0]}</span>}
+              </label>
+              <button type="submit" disabled={isLoading} className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-700 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-800 disabled:opacity-60">
+                {isLoading ? <><Loader2 size={17} className="animate-spin" />Membuat akun...</> : <>Daftar <ArrowRight size={17} /></>}
+              </button>
+            </form>
           </div>
-          <h1 className="font-sans font-bold text-3xl text-slate-900 tracking-tight">
-            Mulai Belajar Python
-          </h1>
-          <p className="text-slate-500 text-sm mt-1.5 font-body">
-            Buat akun Sintaks gratis dan raih XP pertamamu
-          </p>
-        </div>
-
-        {/* Form Card */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
-          {generalError && (
-            <div className="mb-5 p-3.5 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 flex items-center gap-2.5">
-              <AlertCircle size={16} className="text-red-500 flex-shrink-0" />
-              <span>{generalError}</span>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                Nama Lengkap
-              </label>
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Muhammad Ainul"
-                className={`w-full text-sm px-3.5 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
-                  fieldErrors.name
-                    ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
-                    : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
-                }`}
-              />
-              {fieldErrors.name && (
-                <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.name[0]}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                Username
-              </label>
-              <input
-                type="text"
-                required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="ainulfuady"
-                className={`w-full text-sm px-3.5 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
-                  fieldErrors.username
-                    ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
-                    : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
-                }`}
-              />
-              {fieldErrors.username && (
-                <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.username[0]}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                Email
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="ainul@example.com"
-                className={`w-full text-sm px-3.5 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
-                  fieldErrors.email
-                    ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
-                    : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
-                }`}
-              />
-              {fieldErrors.email && (
-                <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.email[0]}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                Password
-              </label>
-              <input
-                type="password"
-                required
-                minLength={8}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Minimal 8 karakter"
-                className={`w-full text-sm px-3.5 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
-                  fieldErrors.password
-                    ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
-                    : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
-                }`}
-              />
-              {fieldErrors.password && (
-                <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.password[0]}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                Konfirmasi Password
-              </label>
-              <input
-                type="password"
-                required
-                minLength={8}
-                value={passwordConfirmation}
-                onChange={(e) => setPasswordConfirmation(e.target.value)}
-                placeholder="Ulangi password di atas"
-                className={`w-full text-sm px-3.5 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
-                  fieldErrors.password_confirmation
-                    ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
-                    : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
-                }`}
-              />
-              {fieldErrors.password_confirmation && (
-                <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.password_confirmation[0]}</p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-sans font-semibold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-md shadow-indigo-100 disabled:opacity-60"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 size={16} className="animate-spin" />
-                  <span>Membuat Akun...</span>
-                </>
-              ) : (
-                <>
-                  <span>Daftar Akun Gratis</span>
-                  <ArrowRight size={16} />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Account Footer */}
-          <div className="mt-6 pt-6 border-t border-slate-100 text-center text-xs text-slate-500">
-            Sudah punya akun?{' '}
-            <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-700 underline">
-              Masuk di sini
-            </Link>
-          </div>
-        </div>
+        </section>
       </div>
-    </div>
+    </main>
   );
 };

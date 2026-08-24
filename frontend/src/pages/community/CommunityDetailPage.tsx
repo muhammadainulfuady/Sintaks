@@ -23,7 +23,7 @@ export const CommunityDetailPage: React.FC = () => {
     if (!communityId) return;
     try {
       const commRes = await communityApi.getCommunity(communityId);
-      setCommunity(commRes.data.community);
+      setCommunity(commRes.data);
 
       const msgRes = await communityApi.getMessages(communityId);
       setMessages(msgRes.data.messages || []);

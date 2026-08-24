@@ -8,6 +8,8 @@ use App\Models\QuizAttempt;
 use App\Models\QuizQuestion;
 use App\Models\QuizAttemptAnswer;
 use App\Models\CodeSubmission;
+use App\Models\XPTransaction;
+use App\Models\ModuleProgress;
 use App\Http\Requests\Quiz\SubmitTheoryAnswerRequest;
 use App\Http\Requests\Quiz\RunCodeRequest;
 use App\Services\Quiz\QuizEvaluationService;
@@ -16,6 +18,7 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
+    private const QUIZ_XP = 50;
     protected QuizEvaluationService $quizEvaluationService;
 
     public function __construct(QuizEvaluationService $quizEvaluationService)
@@ -171,7 +174,19 @@ class QuizController extends Controller
             ], 404);
         }
 
-        $question = QuizQuestion::find($request->validated('quiz_question_id'));
+        $question = QuizQuestion::query()
+            ->whereKey($request->validated('quiz_question_id'))
+            ->where('quiz_id', $quizId)
+            ->first();
+
+        if ($question === null) {
+            return response()->json([
+                'message' => 'Soal kuis tidak valid.',
+                'code' => 422,
+                'data' => null,
+                'errors' => null,
+            ], 422);
+        }
 
         $evaluation = $this->quizEvaluationService->evaluateTheoryAnswer(
             $question,
@@ -193,6 +208,38 @@ class QuizController extends Controller
 
         // Hitung ulang hasil attempt
         $attemptSummary = $this->quizEvaluationService->calculateAttemptResult($attempt);
+        $xpAwarded = 0;
+        $user = $attempt->user;
+
+        if ($attemptSummary['is_complete'] && $attemptSummary['is_passed']) {
+            ModuleProgress::updateOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'module_id' => $attempt->quiz->module_id,
+                ],
+                [
+                    'status' => 'completed',
+                    'completed_at' => now(),
+                ]
+            );
+
+            $xpTransaction = XPTransaction::firstOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'source_type' => 'quiz_completion',
+                    'source_id' => $quizId,
+                ],
+                [
+                    'amount' => self::QUIZ_XP,
+                    'description' => "Lulus quiz: {$attempt->quiz->title}",
+                ]
+            );
+
+            if ($xpTransaction->wasRecentlyCreated) {
+                $user->increment('total_xp', self::QUIZ_XP);
+                $xpAwarded = self::QUIZ_XP;
+            }
+        }
 
         return response()->json([
             'message' => $evaluation['is_correct'] ? 'Jawaban benar!' : 'Jawaban belum tepat.',
@@ -201,6 +248,8 @@ class QuizController extends Controller
                 'is_correct' => $evaluation['is_correct'],
                 'explanation' => $evaluation['explanation'],
                 'attempt_summary' => $attemptSummary,
+                'xp_awarded' => $xpAwarded,
+                'total_xp' => (int) $user->fresh()->total_xp,
             ],
             'errors' => null,
         ], 200);

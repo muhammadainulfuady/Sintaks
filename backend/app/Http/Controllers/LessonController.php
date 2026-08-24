@@ -102,7 +102,9 @@ class LessonController extends Controller
                 ->whereIn('lesson_id', $lesson->module->lessons()->pluck('id'))
                 ->where('is_completed', true)
                 ->count();
-            $status = $completedLessonsCount > 0 ? 'in_progress' : 'not_started';
+            $status = $completedLessonsCount === $lessonsCount
+                ? 'completed'
+                : ($completedLessonsCount > 0 ? 'in_progress' : 'not_started');
 
             ModuleProgress::updateOrCreate(
                 [
@@ -111,7 +113,7 @@ class LessonController extends Controller
                 ],
                 [
                     'status' => $status,
-                    'completed_at' => null,
+                    'completed_at' => $status === 'completed' ? now() : null,
                 ]
             );
 
@@ -121,6 +123,7 @@ class LessonController extends Controller
                 'module_progress_percentage' => $lessonsCount === 0
                     ? 0
                     : (int) round(($completedLessonsCount / $lessonsCount) * 100),
+                'total_xp' => (int) $user->fresh()->total_xp,
             ];
         });
 

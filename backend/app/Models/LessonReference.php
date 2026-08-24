@@ -9,6 +9,9 @@ class LessonReference extends Model
 {
     use HasFactory;
 
+    // Database lama proyek tidak memiliki kolom created_at dan updated_at.
+    public $timestamps = false;
+
     protected $fillable = [
         'lesson_id',
         'title',

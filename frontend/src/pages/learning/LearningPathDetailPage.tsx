@@ -25,10 +25,10 @@ export const LearningPathDetailPage: React.FC = () => {
       if (!slug) return;
       try {
         const pathRes = await learningApi.getLearningPath(slug);
-        setPath(pathRes.data.learning_path);
+        setPath(pathRes.data);
 
         const modulesRes = await learningApi.getModules(slug);
-        setModules(modulesRes.data.modules || []);
+        setModules(modulesRes.data || []);
       } catch (err) {
         console.error('Failed to load learning path detail:', err);
       } finally {

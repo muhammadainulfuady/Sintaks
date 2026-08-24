@@ -117,20 +117,42 @@ class QuizEvaluationService
         $totalQuestions = $attempt->total_questions;
 
         if ($totalQuestions === 0) {
-            return ['score' => 0, 'is_passed' => false];
+            return ['score' => 0, 'is_passed' => false, 'is_complete' => true];
         }
 
         $correctCount = $attempt->answers()->where('is_correct', true)->count();
         $wrongCount = $totalQuestions - $correctCount;
         $score = (int) round(($correctCount / $totalQuestions) * 100);
+        $answeredCount = $attempt->answers()->count();
+
+        // Quiz baru dinilai final setelah semua soal dijawab.
+        if ($answeredCount < $totalQuestions) {
+            $attempt->update([
+                'score' => $score,
+                'correct_count' => $correctCount,
+                'wrong_count' => max(0, $answeredCount - $correctCount),
+                'status' => 'in_progress',
+                'completed_at' => null,
+            ]);
+
+            return [
+                'score' => $score,
+                'correct_count' => $correctCount,
+                'wrong_count' => max(0, $answeredCount - $correctCount),
+                'is_passed' => false,
+                'is_complete' => false,
+                'passing_score' => $quiz->passing_score,
+            ];
+        }
+
         $isPassed = $score >= $quiz->passing_score;
 
         $attempt->update([
             'score' => $score,
             'correct_count' => $correctCount,
             'wrong_count' => $wrongCount,
-            'status' => $isPassed ? 'completed' : 'in_progress',
-            'completed_at' => $isPassed ? now() : null,
+            'status' => 'completed',
+            'completed_at' => now(),
         ]);
 
         return [
@@ -138,8 +160,8 @@ class QuizEvaluationService
             'correct_count' => $correctCount,
             'wrong_count' => $wrongCount,
             'is_passed' => $isPassed,
+            'is_complete' => true,
             'passing_score' => $quiz->passing_score,
         ];
     }
 }
-

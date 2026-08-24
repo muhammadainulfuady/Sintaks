@@ -163,9 +163,11 @@ DB_PASSWORD=
 # Sanctum
 SANCTUM_STATEFUL_DOMAINS=localhost:3000
 
-# AI Provider untuk NOVA (gunakan salah satu)
-AI_PROVIDER_API_KEY=
-AI_PROVIDER_BASE_URL=
+# NOVA AI Tutor (Google Gemini)
+NOVA_PROVIDER=gemini
+GEMINI_API_KEY=your_google_ai_studio_api_key
+GEMINI_MODEL=gemini-3.1-flash-lite
+GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta
 
 # Code Execution Service
 CODE_EXECUTION_SERVICE_URL=http://localhost:8001

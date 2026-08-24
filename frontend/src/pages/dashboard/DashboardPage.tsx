@@ -24,7 +24,7 @@ export const DashboardPage: React.FC = () => {
     const fetchDashboardData = async () => {
       try {
         const res = await learningApi.getLearningPaths();
-        setPaths(res.data.learning_paths || []);
+        setPaths(res.data || []);
       } catch (err) {
         console.error('Failed to load dashboard data:', err);
       } finally {
@@ -44,7 +44,7 @@ export const DashboardPage: React.FC = () => {
           <div className="relative z-10 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/15 backdrop-blur rounded-full text-xs font-semibold mb-4 text-indigo-100 border border-white/20">
               <Sparkles size={14} />
-              <span>Platform Belajar Python Sintaks</span>
+              <span>Platform Belajar Sintaks</span>
             </div>
             <h1 className="font-sans font-extrabold text-2xl sm:text-4xl tracking-tight leading-tight">
               Selamat Datang Kembali, {user?.name || 'Developer'}! 👋
@@ -90,7 +90,7 @@ export const DashboardPage: React.FC = () => {
               </div>
             </div>
             <p className="font-mono font-bold text-2xl text-slate-900">{paths.length}</p>
-            <p className="text-[11px] text-slate-400">Alur belajar Python aktif</p>
+            <p className="text-[11px] text-slate-400">Alur belajar aktif</p>
           </div>
 
           <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-xs space-y-1">
@@ -141,7 +141,7 @@ export const DashboardPage: React.FC = () => {
               <BookOpen size={36} className="mx-auto text-slate-300" />
               <h3 className="font-sans font-bold text-base text-slate-800">Belum Ada Alur Belajar</h3>
               <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                Mulai perjalanan kodingmu dengan mendaftar ke alur belajar Python Fundamentals.
+                Mulai perjalanan belajarmu dengan mendaftar ke salah satu alur yang tersedia.
               </p>
               <Link
                 to="/learning-paths"
@@ -179,7 +179,7 @@ export const DashboardPage: React.FC = () => {
                   <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
                     <span className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
                       <BookOpen size={14} className="text-indigo-500" />
-                      Python Fundamentals
+                      {path.total_lessons || 0} materi
                     </span>
                     <Link
                       to={`/learning-paths/${path.slug}`}

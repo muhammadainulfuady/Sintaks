@@ -2,13 +2,13 @@ import api from './axios';
 import { ApiResponse, Quiz, QuizAttempt, CodeExecutionResult } from '../types';
 
 export const quizApi = {
-  getModuleQuiz: async (moduleSlug: string): Promise<ApiResponse<{ quiz: Quiz }>> => {
-    const res = await api.get<ApiResponse<{ quiz: Quiz }>>(`/modules/${moduleSlug}/quiz`);
+  getModuleQuiz: async (moduleSlug: string): Promise<ApiResponse<Quiz>> => {
+    const res = await api.get<ApiResponse<Quiz>>(`/modules/${moduleSlug}/quiz`);
     return res.data;
   },
 
-  startAttempt: async (quizId: number): Promise<ApiResponse<{ attempt: QuizAttempt }>> => {
-    const res = await api.post<ApiResponse<{ attempt: QuizAttempt }>>(`/quizzes/${quizId}/attempts`);
+  startAttempt: async (quizId: number): Promise<ApiResponse<QuizAttempt>> => {
+    const res = await api.post<ApiResponse<QuizAttempt>>(`/quizzes/${quizId}/attempts`);
     return res.data;
   },
 
@@ -17,10 +17,10 @@ export const quizApi = {
     attemptId: number,
     questionId: number,
     answer: number | string
-  ): Promise<ApiResponse<{ is_correct: boolean; explanation?: string }>> => {
-    const res = await api.post<ApiResponse<{ is_correct: boolean; explanation?: string }>>(
+  ): Promise<ApiResponse<{ is_correct: boolean; explanation?: string; xp_awarded?: number; total_xp?: number }>> => {
+    const res = await api.post<ApiResponse<{ is_correct: boolean; explanation?: string; xp_awarded?: number; total_xp?: number }>>(
       `/quizzes/${quizId}/attempts/${attemptId}/answers`,
-      { question_id: questionId, answer }
+      { quiz_question_id: questionId, answer_value: String(answer) }
     );
     return res.data;
   },

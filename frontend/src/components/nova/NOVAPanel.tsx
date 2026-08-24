@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Sparkles, Send, Bot, User, AlertCircle, RefreshCw } from 'lucide-react';
+import { Sparkles, Send, User, AlertCircle, RefreshCw } from 'lucide-react';
 import { novaApi } from '../../api/nova';
+import novaMascot from '../../assets/maskotnova.png';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -70,15 +71,15 @@ export const NOVAPanel: React.FC<NOVAPanelProps> = ({ lessonId, moduleId, lesson
       {/* Header Panel NOVA */}
       <div className="p-4 border-b border-indigo-100 bg-white/80 backdrop-blur flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-sm">
-            <Sparkles size={18} />
+          <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center overflow-hidden shadow-sm">
+            <img src={novaMascot} alt="Maskot NOVA" className="w-full h-full object-contain p-0.5" />
           </div>
           <div>
             <h3 className="font-sans font-bold text-sm text-slate-900 flex items-center gap-1.5">
               NOVA AI Tutor
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             </h3>
-            <p className="text-[11px] text-slate-500 font-medium">Google Gemini 3.6 Flash</p>
+            <p className="text-[11px] text-slate-500 font-medium">Google Gemini AI</p>
           </div>
         </div>
       </div>
@@ -91,8 +92,8 @@ export const NOVAPanel: React.FC<NOVAPanelProps> = ({ lessonId, moduleId, lesson
             className={`flex gap-2.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             {msg.role === 'assistant' && (
-              <div className="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center flex-shrink-0 text-xs">
-                <Bot size={14} />
+              <div className="w-7 h-7 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                <img src={novaMascot} alt="NOVA" className="w-full h-full object-contain p-0.5" />
               </div>
             )}
             <div

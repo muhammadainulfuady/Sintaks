@@ -23,10 +23,10 @@ export const ModuleDetailPage: React.FC = () => {
       if (!slug) return;
       try {
         const modRes = await learningApi.getModule(slug);
-        setModuleData(modRes.data.module);
+        setModuleData(modRes.data);
 
         const lessonsRes = await learningApi.getModuleLessons(slug);
-        setLessons(lessonsRes.data.lessons || []);
+        setLessons(lessonsRes.data || []);
       } catch (err) {
         console.error('Failed to load module detail:', err);
       } finally {

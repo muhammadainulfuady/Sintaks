@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { authApi } from '../../api/auth';
-import { Code2, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
+import logoSintaks from '../../assets/logosintaks.png';
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -10,128 +11,57 @@ export const LoginPage: React.FC = () => {
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [isLoading, setIsLoading] = useState(false);
-
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setGeneralError(null);
     setFieldErrors({});
     setIsLoading(true);
-
     try {
-      const res = await authApi.login(email, password);
-      login(res.data.token, res.data.user);
+      const response = await authApi.login(email, password);
+      login(response.data.token, response.data.user);
       navigate('/dashboard');
     } catch (err: any) {
-      if (err.response?.data?.errors) {
-        setFieldErrors(err.response.data.errors);
-        setGeneralError(err.response.data.message || 'Validasi gagal. Periksa kembali input Anda.');
-      } else {
-        setGeneralError(err.response?.data?.message || 'Login gagal. Periksa kembali email dan password Anda.');
-      }
+      setFieldErrors(err.response?.data?.errors || {});
+      setGeneralError(err.response?.data?.message || 'Login gagal. Periksa kembali email dan password Anda.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        {/* Brand Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-indigo-600 text-white mb-4 shadow-lg shadow-indigo-200">
-            <Code2 size={26} className="stroke-[2.5]" />
-          </div>
-          <h1 className="font-sans font-bold text-3xl text-slate-900 tracking-tight">
-            Selamat Datang Kembali
-          </h1>
-          <p className="text-slate-500 text-sm mt-1.5 font-body">
-            Masuk ke akun Sintaks untuk melanjutkan belajar Python
-          </p>
-        </div>
-
-        {/* Form Card */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
-          {generalError && (
-            <div className="mb-5 p-3.5 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 flex items-center gap-2.5">
-              <AlertCircle size={16} className="text-red-500 flex-shrink-0" />
-              <span>{generalError}</span>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                Email
+    <main className="flex min-h-screen items-center justify-center bg-slate-100 p-4 sm:p-6">
+      <div className="grid w-full max-w-5xl overflow-hidden rounded-[2rem] bg-white shadow-2xl shadow-slate-300/60 lg:grid-cols-[1fr_1.05fr]">
+        <section className="order-2 px-7 py-10 sm:px-12 lg:order-1 lg:px-16 lg:py-16">
+          <div className="mx-auto max-w-sm">
+            <h1 className="font-sans text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">Masuk</h1>
+            <p className="mt-2 text-sm text-slate-500">Gunakan email dan password akun Sintaks Anda.</p>
+            {generalError && <div className="mt-6 flex gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-700"><AlertCircle size={16} className="shrink-0" />{generalError}</div>}
+            <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+              <label className="block text-xs font-semibold text-slate-700">Email
+                <input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="nama@email.com" className={`mt-1.5 w-full rounded-xl border bg-slate-100 px-4 py-3 text-sm outline-none transition focus:ring-2 ${fieldErrors.email ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:border-indigo-500 focus:ring-indigo-100'}`} />
+                {fieldErrors.email && <span className="mt-1 block text-xs text-red-600">{fieldErrors.email[0]}</span>}
               </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="nama@email.com"
-                className={`w-full text-sm px-3.5 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
-                  fieldErrors.email
-                    ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
-                    : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
-                }`}
-              />
-              {fieldErrors.email && (
-                <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.email[0]}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                Password
+              <label className="block text-xs font-semibold text-slate-700">Password
+                <input type="password" required value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Masukkan password" className={`mt-1.5 w-full rounded-xl border bg-slate-100 px-4 py-3 text-sm outline-none transition focus:ring-2 ${fieldErrors.password ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:border-indigo-500 focus:ring-indigo-100'}`} />
+                {fieldErrors.password && <span className="mt-1 block text-xs text-red-600">{fieldErrors.password[0]}</span>}
               </label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className={`w-full text-sm px-3.5 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
-                  fieldErrors.password
-                    ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
-                    : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
-                }`}
-              />
-              {fieldErrors.password && (
-                <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.password[0]}</p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-sans font-semibold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-md shadow-indigo-100 disabled:opacity-60"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 size={16} className="animate-spin" />
-                  <span>Memproses Login...</span>
-                </>
-              ) : (
-                <>
-                  <span>Masuk Akun</span>
-                  <ArrowRight size={16} />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Account Footer */}
-          <div className="mt-6 pt-6 border-t border-slate-100 text-center text-xs text-slate-500">
-            Belum punya akun?{' '}
-            <Link to="/register" className="font-semibold text-indigo-600 hover:text-indigo-700 underline">
-              Daftar Sekarang
-            </Link>
+              <button type="submit" disabled={isLoading} className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-700 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-800 disabled:opacity-60">
+                {isLoading ? <><Loader2 size={17} className="animate-spin" />Memproses...</> : <>Masuk <ArrowRight size={17} /></>}
+              </button>
+            </form>
           </div>
-        </div>
+        </section>
+
+        <aside className="order-1 flex min-h-72 flex-col items-center justify-center bg-gradient-to-br from-indigo-600 to-violet-700 px-8 py-10 text-center text-white lg:order-2 lg:min-h-full lg:rounded-bl-[9rem]">
+          <img src={logoSintaks} alt="Logo Sintaks" className="h-16 w-16 rounded-2xl object-contain shadow-lg" />
+          <h2 className="mt-6 font-sans text-3xl font-extrabold sm:text-4xl">Halo, Teman!</h2>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-indigo-100">Buat akun untuk mulai menjelajahi materi dan fitur Sintaks.</p>
+          <Link to="/register" className="mt-8 rounded-xl border border-white/70 px-9 py-3 text-xs font-bold tracking-wide text-white transition hover:bg-white hover:text-indigo-700">DAFTAR</Link>
+        </aside>
       </div>
-    </div>
+    </main>
   );
 };
