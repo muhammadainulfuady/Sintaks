@@ -20,9 +20,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('sintaks_token');
-      localStorage.removeItem('sintaks_user');
-      if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+      const currentPath = window.location.pathname;
+      if (currentPath !== '/login' && currentPath !== '/register') {
+        localStorage.removeItem('sintaks_token');
+        localStorage.removeItem('sintaks_user');
         window.location.href = '/login';
       }
     }

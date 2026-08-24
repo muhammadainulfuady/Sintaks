@@ -22,34 +22,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('sintaks_token'));
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // Validate token once on initial app load
   useEffect(() => {
-    const fetchUser = async () => {
-      if (token) {
+    const initAuth = async () => {
+      const savedToken = localStorage.getItem('sintaks_token');
+      if (savedToken) {
         try {
           const res = await authApi.getProfile();
           setUser(res.data.user);
           localStorage.setItem('sintaks_user', JSON.stringify(res.data.user));
         } catch {
+          // Token is invalid or expired
           setToken(null);
           setUser(null);
           localStorage.removeItem('sintaks_token');
           localStorage.removeItem('sintaks_user');
-        } finally {
-          setIsLoading(false);
         }
-      } else {
-        setIsLoading(false);
       }
+      setIsLoading(false);
     };
 
-    fetchUser();
-  }, [token]);
+    initAuth();
+  }, []);
 
   const login = (newToken: string, newUser: User) => {
     setToken(newToken);
     setUser(newUser);
     localStorage.setItem('sintaks_token', newToken);
     localStorage.setItem('sintaks_user', JSON.stringify(newUser));
+    setIsLoading(false);
   };
 
   const logout = async () => {
