@@ -23,7 +23,7 @@ Implementasi learning structure (Learning Path → Module → Lesson) dengan pro
   - `index()` — list user's notes (`GET /notes`)
   - `storeForLesson()` — create note dari lesson (`POST /lessons/{slug}/notes`)
   - `destroy()` — delete note milik sendiri (`DELETE /notes/{id}`)
-- [ ] Create NovaController & NovaService dengan methods:
+- [x] Create NovaController & NovaService dengan methods:
   - `chat()` — send message to NOVA AI tutor with lesson/module context (`POST /nova/chat`)
 - [x] Create ProgressController & XPController dengan methods:
   - `getProgressSummary()` — get dashboard progress summary (`GET /progress`)
@@ -31,7 +31,7 @@ Implementasi learning structure (Learning Path → Module → Lesson) dengan pro
   - `getXpHistory()` — get total XP & transaction history (`GET /xp`)
 - [x] Create NotePolicy untuk authorization (only owner can delete note)
 - [x] Create ModuleLockService untuk handle prerequisite module locking
-- [ ] Setup API routes di `routes/api.php` persis sesuai docs/api-docs.json:
+- [x] Setup API routes di `routes/api.php` persis sesuai docs/api-docs.json:
   - `GET /learning-paths`
   - `GET /learning-paths/{slug}`
   - `POST /learning-paths/{slug}/enroll`

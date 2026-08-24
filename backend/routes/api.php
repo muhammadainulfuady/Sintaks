@@ -9,6 +9,7 @@ use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\XPController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\NovaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,4 +49,5 @@ Route::middleware('auth:sanctum')->group(function () {
 	Route::get('/progress', [ProgressController::class, 'getProgressSummary']);
 	Route::get('/progress/modules', [ProgressController::class, 'getModuleProgress']);
 	Route::get('/xp', [XPController::class, 'getXpHistory']);
+	Route::post('/nova/chat', [NovaController::class, 'chat']);
 });
