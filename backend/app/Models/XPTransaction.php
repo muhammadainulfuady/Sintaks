@@ -9,11 +9,14 @@ class XPTransaction extends Model
 {
     use HasFactory;
 
+    protected $table = 'xp_transactions';
+
     public const UPDATED_AT = null;
 
     protected $fillable = [
         'user_id',
         'amount',
+        'source',
         'source_type',
         'source_id',
         'description',
