@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title', 200);
             $table->string('url', 500);
             $table->unsignedInteger('order')->default(0);
+            $table->timestamps();
 
             $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
             $table->index('lesson_id');

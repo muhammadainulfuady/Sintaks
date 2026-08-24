@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Code Completion Quiz</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&amp;family=Manrope:wght@600;700;800&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#54647a",
+                        "primary-fixed": "#e3dfff",
+                        "on-surface": "#1b1b23",
+                        "inverse-surface": "#302f39",
+                        "surface-container-low": "#f6f2fe",
+                        "inverse-primary": "#c3c0ff",
+                        "on-background": "#1b1b23",
+                        "on-tertiary-fixed": "#25005a",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-primary-fixed": "#100069",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#4b00a7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f3effb",
+                        "on-tertiary-container": "#d1b9ff",
+                        "on-tertiary-fixed-variant": "#5a00c6",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary-container": "#6616d7",
+                        "surface-tint": "#5148d7",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "background": "#fcf8ff",
+                        "secondary-container": "#d0e1fb",
+                        "tertiary-fixed": "#eaddff",
+                        "surface-container-high": "#eae6f3",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e4e1ed",
+                        "outline-variant": "#c7c4d7",
+                        "surface-dim": "#dcd8e4",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e4e1ed",
+                        "on-primary-fixed-variant": "#372abf",
+                        "secondary": "#505f76",
+                        "surface-bright": "#fcf8ff",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#464554",
+                        "surface-container": "#f0ecf8",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "tertiary-fixed-dim": "#d2bbff",
+                        "surface": "#fcf8ff",
+                        "primary-container": "#4338ca",
+                        "outline": "#777586",
+                        "on-primary-container": "#c1beff",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#2a14b4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-width": "240px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "max-content-width": "1200px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Manrope"],
+                        "display-lg": ["Manrope"],
+                        "headline-lg": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "code-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(226, 232, 240, 0.8); }
+        .code-slot { min-width: 60px; display: inline-block; text-align: center; border-bottom: 2px dashed #94a3b8; }
+        .code-slot.filled { border-bottom: 2px solid #4338ca; background-color: #eef2ff; color: #4338ca; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- Top Navigation (Shell suppressed as this is a focused task, but kept a minimal header for context) -->
+<header class="w-full bg-surface-container-lowest border-b border-outline-variant py-md px-lg flex items-center justify-between sticky top-0 z-10 shadow-sm">
+<div class="flex items-center gap-sm">
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined">arrow_back</span>
+<span class="font-label-md text-label-md">Kembali</span>
+</button>
+</div>
+<div class="text-center">
+<h1 class="font-headline-md text-headline-md text-primary font-bold">Modul 3: Perulangan</h1>
+</div>
+<div class="w-24"></div> <!-- Spacer -->
+</header>
+<main class="flex-grow flex flex-col items-center justify-center p-md md:p-lg w-full max-w-max-content-width mx-auto">
+<div class="w-full max-w-3xl flex flex-col gap-lg">
+<!-- Header & Progress -->
+<div class="flex flex-col gap-sm">
+<div class="flex justify-between items-center font-label-md text-label-md text-on-surface-variant">
+<span>Soal 7 dari 10</span>
+<span>Progress 70%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary transition-all duration-500 ease-out" style="width: 70%;"></div>
+</div>
+</div>
+<!-- Task Description -->
+<div class="glass-panel p-lg rounded-DEFAULT shadow-sm">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-md">Lengkapi kode berikut untuk menampilkan angka genap dari 1 sampai 10.</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Tarik atau klik token di bawah ini untuk mengisi bagian yang kosong.</p>
+</div>
+<!-- Code Area -->
+<div class="bg-slate-900 rounded-lg p-lg shadow-md relative overflow-hidden group">
+<button class="absolute top-md right-md text-slate-400 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 p-xs rounded-sm">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+<div class="font-code-sm text-code-sm text-slate-300 leading-loose whitespace-pre">
+<span class="code-slot cursor-pointer transition-colors" data-slot="1">____</span> i in <span class="code-slot cursor-pointer transition-colors" data-slot="2">____</span>:
+    if i % <span class="code-slot cursor-pointer transition-colors" data-slot="3">____</span> == 0:
+        print(i)
+                </div>
+</div>
+<!-- Token Selection -->
+<div class="flex flex-col gap-md p-md bg-surface-container-low rounded-DEFAULT border border-outline-variant">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Pilihan Token</span>
+<div class="flex flex-wrap gap-sm">
+<button class="font-code-sm text-code-sm bg-surface-container-lowest border border-outline-variant text-on-surface px-md py-sm rounded-DEFAULT hover:border-primary hover:text-primary transition-all shadow-sm">for</button>
+<button class="font-code-sm text-code-sm bg-surface-container-lowest border border-outline-variant text-on-surface px-md py-sm rounded-DEFAULT hover:border-primary hover:text-primary transition-all shadow-sm">while</button>
+<button class="font-code-sm text-code-sm bg-surface-container-lowest border border-outline-variant text-on-surface px-md py-sm rounded-DEFAULT hover:border-primary hover:text-primary transition-all shadow-sm">range(10)</button>
+<button class="font-code-sm text-code-sm bg-surface-container-lowest border border-outline-variant text-on-surface px-md py-sm rounded-DEFAULT hover:border-primary hover:text-primary transition-all shadow-sm">2</button>
+<button class="font-code-sm text-code-sm bg-surface-container-lowest border border-outline-variant text-on-surface px-md py-sm rounded-DEFAULT hover:border-primary hover:text-primary transition-all shadow-sm">3</button>
+</div>
+</div>
+<!-- CTA -->
+<div class="flex justify-end mt-sm">
+<button class="bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md px-lg py-md rounded-DEFAULT flex items-center gap-sm transition-colors shadow-sm cursor-not-allowed opacity-50" disabled="">
+                    Periksa Jawaban
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Simple JS for demonstration of filling a slot -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tokens = document.querySelectorAll('.flex-wrap button');
+            const slots = document.querySelectorAll('.code-slot');
+            const cta = document.querySelector('button.bg-primary');
+            let activeSlot = slots[0];
+
+            slots.forEach(slot => {
+                slot.addEventListener('click', () => {
+                    slots.forEach(s => s.classList.remove('bg-slate-800'));
+                    slot.classList.add('bg-slate-800');
+                    activeSlot = slot;
+                });
+            });
+
+            tokens.forEach(token => {
+                token.addEventListener('click', () => {
+                    if (activeSlot) {
+                        activeSlot.textContent = token.textContent;
+                        activeSlot.classList.add('filled');
+                        activeSlot.classList.remove('bg-slate-800');
+                        token.classList.add('opacity-50', 'pointer-events-none');
+                        
+                        // Move to next slot
+                        const nextIndex = Array.from(slots).indexOf(activeSlot) + 1;
+                        if (nextIndex < slots.length) {
+                            activeSlot = slots[nextIndex];
+                        } else {
+                            activeSlot = null;
+                            cta.classList.remove('cursor-not-allowed', 'opacity-50');
+                            cta.disabled = false;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body></html>

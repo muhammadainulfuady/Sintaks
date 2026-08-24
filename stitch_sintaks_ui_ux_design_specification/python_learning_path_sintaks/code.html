@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sintaks - Python Learning Path</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&amp;family=Manrope:wght@600;700;800&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#54647a",
+                        "primary-fixed": "#e3dfff",
+                        "on-surface": "#1b1b23",
+                        "inverse-surface": "#302f39",
+                        "surface-container-low": "#f6f2fe",
+                        "inverse-primary": "#c3c0ff",
+                        "on-background": "#1b1b23",
+                        "on-tertiary-fixed": "#25005a",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-primary-fixed": "#100069",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#4b00a7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f3effb",
+                        "on-tertiary-container": "#d1b9ff",
+                        "on-tertiary-fixed-variant": "#5a00c6",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary-container": "#6616d7",
+                        "surface-tint": "#5148d7",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "background": "#fcf8ff",
+                        "secondary-container": "#d0e1fb",
+                        "tertiary-fixed": "#eaddff",
+                        "surface-container-high": "#eae6f3",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e4e1ed",
+                        "outline-variant": "#c7c4d7",
+                        "surface-dim": "#dcd8e4",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e4e1ed",
+                        "on-primary-fixed-variant": "#372abf",
+                        "secondary": "#505f76",
+                        "surface-bright": "#fcf8ff",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#464554",
+                        "surface-container": "#f0ecf8",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "tertiary-fixed-dim": "#d2bbff",
+                        "surface": "#fcf8ff",
+                        "primary-container": "#4338ca",
+                        "outline": "#777586",
+                        "on-primary-container": "#c1beff",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#2a14b4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-width": "240px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "max-content-width": "1200px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Hanken Grotesk", "sans-serif"],
+                        "body-md": ["Hanken Grotesk", "sans-serif"],
+                        "code-sm": ["JetBrains Mono", "monospace"],
+                        "body-lg": ["Hanken Grotesk", "sans-serif"],
+                        "headline-md": ["Manrope", "sans-serif"],
+                        "display-lg": ["Manrope", "sans-serif"],
+                        "headline-lg": ["Manrope", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "code-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex">
+<!-- SideNavBar (Shared Component) -->
+<nav class="hidden md:flex flex-col h-full py-lg px-md bg-surface border-r border-outline-variant shadow-sm fixed left-0 top-0 w-sidebar-width z-50">
+<div class="mb-xl px-md">
+<h1 class="text-headline-md font-headline-md font-extrabold text-primary">Sintaks</h1>
+<p class="text-label-md font-label-md text-on-surface-variant mt-sm">Empathetic Clarity</p>
+</div>
+<div class="flex-1 space-y-sm">
+<a class="flex items-center gap-md text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200 rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-label-md font-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md bg-secondary-container text-on-secondary-container rounded-DEFAULT px-md py-sm font-bold scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined fill" data-icon="school">school</span>
+<span class="text-label-md font-label-md">Learning</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200 rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="text-label-md font-label-md">Notes</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200 rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-label-md font-label-md">Community</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200 rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-label-md font-label-md">Profile</span>
+</a>
+</div>
+<div class="mt-auto pt-lg border-t border-outline-variant">
+<button class="w-full bg-primary-container text-on-primary-container hover:bg-[#3730A3] text-white py-sm rounded-DEFAULT text-label-md font-label-md transition-colors duration-200 mb-lg flex justify-center items-center gap-sm">
+                 Upgrade to Pro
+             </button>
+<a class="flex items-center gap-md text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200 rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="text-label-md font-label-md">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-sidebar-width p-lg max-w-max-content-width mx-auto w-full">
+<!-- Header Section -->
+<header class="mb-xl">
+<div class="flex items-start gap-lg bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-[0px_2px_4px_rgba(15,23,42,0.05)]">
+<div class="w-24 h-24 rounded-DEFAULT bg-secondary-container flex items-center justify-center shrink-0">
+<img alt="Python Logo" class="w-16 h-16" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh_bZjHGu5I-UVQK89CncONl8qlmNJsausSKIR_eEKKZ1U74WN5Pz2N4e3BOQsWo7JjxQIVeYftnosVKGNzfb_twx2n5weU_8mexrQEYm_REZrRLTfm8jaeAXTn8IS8Z1x-loxdwvv0sFuNXb6yxTA1Vs9F-KoL-UgajEtRa28uFASr-ZWoDvROxPwK5fC5dXblKRO_P4rhvgboV0VQWhebZkQrBgZHRC0Sx20Yw1ns4alo1Zh530C"/>
+</div>
+<div class="flex-1">
+<h2 class="text-display-lg font-display-lg text-primary mb-sm">Python</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant mb-lg">Belajar programming dari dasar menggunakan bahasa Python</p>
+<div class="space-y-sm">
+<div class="flex justify-between items-center text-label-md font-label-md">
+<span class="text-on-surface-variant">Overall Progress</span>
+<span class="text-primary font-bold">80% <span class="text-on-surface-variant font-normal">(8 dari 10 Module)</span></span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 80%;"></div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Learning Path Modules -->
+<section class="relative pl-8 before:absolute before:inset-y-0 before:left-[1.375rem] before:w-[2px] before:bg-surface-container-high ml-md">
+<!-- Module 01: Completed -->
+<article class="relative mb-xl pl-lg group">
+<div class="absolute left-[-2.375rem] top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-green-100 border-2 border-white flex items-center justify-center z-10 shadow-sm">
+<span class="material-symbols-outlined text-green-600 text-sm font-bold" data-icon="check">check</span>
+</div>
+<!-- Connector Line Override for Completed -->
+<div class="absolute left-[-1.375rem] top-[50%] bottom-[-2rem] w-[2px] bg-green-500 z-0 hidden group-last:hidden"></div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-[0px_2px_4px_rgba(15,23,42,0.05)] hover:shadow-[0px_10px_15px_-3px_rgba(15,23,42,0.08)] hover:border-outline transition-all duration-300">
+<div class="flex justify-between items-center mb-sm">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">M01</span>
+<span class="text-label-md font-label-md text-green-600 bg-green-50 px-sm py-xs rounded-full">Completed</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-on-surface mb-sm">Python Fundamentals</h3>
+<p class="text-body-md font-body-md text-on-surface-variant line-clamp-2">Pengenalan sintaks dasar, variabel, dan tipe data dalam Python.</p>
+</div>
+</article>
+<!-- Module 02: Completed -->
+<article class="relative mb-xl pl-lg group">
+<!-- Inherit Green Line from M01 to M02 -->
+<div class="absolute left-[-1.375rem] top-[-2rem] bottom-[50%] w-[2px] bg-green-500 z-0"></div>
+<div class="absolute left-[-2.375rem] top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-green-100 border-2 border-white flex items-center justify-center z-10 shadow-sm">
+<span class="material-symbols-outlined text-green-600 text-sm font-bold" data-icon="check">check</span>
+</div>
+<!-- Connector Line Override for In Progress next -->
+<div class="absolute left-[-1.375rem] top-[50%] bottom-[-2rem] w-[2px] bg-primary-container z-0 hidden group-last:hidden"></div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-[0px_2px_4px_rgba(15,23,42,0.05)] hover:shadow-[0px_10px_15px_-3px_rgba(15,23,42,0.08)] hover:border-outline transition-all duration-300">
+<div class="flex justify-between items-center mb-sm">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">M02</span>
+<span class="text-label-md font-label-md text-green-600 bg-green-50 px-sm py-xs rounded-full">Completed</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-on-surface mb-sm">Operator</h3>
+<p class="text-body-md font-body-md text-on-surface-variant line-clamp-2">Memahami operasi aritmatika, logika, dan perbandingan.</p>
+</div>
+</article>
+<!-- Module 03: In Progress -->
+<article class="relative mb-xl pl-lg group">
+<!-- Inherit Primary Line from M02 to M03 -->
+<div class="absolute left-[-1.375rem] top-[-2rem] bottom-[50%] w-[2px] bg-primary-container z-0"></div>
+<div class="absolute left-[-2.375rem] top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-secondary-container border-2 border-primary-container flex items-center justify-center z-10 shadow-[0_0_10px_rgba(67,56,202,0.3)]">
+<span class="material-symbols-outlined text-primary-container text-sm font-bold" data-icon="schedule">schedule</span>
+</div>
+<div class="bg-surface-container-lowest border border-primary-container rounded-xl p-md shadow-[0px_10px_15px_-3px_rgba(15,23,42,0.08)] relative overflow-hidden">
+<!-- Subtle Progress Glow -->
+<div class="absolute top-0 left-0 h-1 bg-primary-container w-[60%]"></div>
+<div class="flex justify-between items-center mb-sm">
+<span class="text-label-md font-label-md text-primary-container uppercase tracking-wider">M03</span>
+<span class="text-label-md font-label-md text-primary-container bg-indigo-50 px-sm py-xs rounded-full">In Progress</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-on-surface mb-sm">Conditional</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-md">Pengambilan keputusan menggunakan struktur if, elif, dan else.</p>
+<div class="flex items-center gap-sm mt-md pt-md border-t border-outline-variant/50">
+<div class="flex-1 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 60%;"></div>
+</div>
+<span class="text-label-md font-label-md text-on-surface-variant">60%</span>
+<button class="ml-auto bg-primary-container text-white px-md py-xs rounded-DEFAULT text-label-md font-label-md hover:bg-[#3730A3] transition-colors">Lanjutkan</button>
+</div>
+</div>
+</article>
+<!-- Module 04: Locked -->
+<article class="relative pl-lg group">
+<div class="absolute left-[-2.375rem] top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-surface-container-high border-2 border-white flex items-center justify-center z-10 shadow-sm">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="lock">lock</span>
+</div>
+<div class="bg-surface-container opacity-60 rounded-xl p-md border border-transparent grayscale-[30%]">
+<div class="flex justify-between items-center mb-sm">
+<span class="text-label-md font-label-md text-outline uppercase tracking-wider">M04</span>
+<span class="text-label-md font-label-md text-outline bg-surface-container-highest px-sm py-xs rounded-full flex items-center gap-xs">
+                            Locked
+                        </span>
+</div>
+<h3 class="text-headline-md font-headline-md text-on-surface-variant mb-sm">Loop</h3>
+<p class="text-body-md font-body-md text-outline">Perulangan data menggunakan for dan while loop.</p>
+</div>
+</article>
+</section>
+</main>
+</body></html>
