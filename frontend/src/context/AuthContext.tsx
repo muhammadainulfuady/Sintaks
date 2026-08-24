@@ -34,9 +34,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setUser(null);
           localStorage.removeItem('sintaks_token');
           localStorage.removeItem('sintaks_user');
+        } finally {
+          setIsLoading(false);
         }
+      } else {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     fetchUser();
