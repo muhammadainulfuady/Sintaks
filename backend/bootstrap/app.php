@@ -9,6 +9,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -25,17 +26,18 @@ return Application::configure(basePath: dirname(__DIR__))
             fn (Request $request): bool => $request->is('api/*') || $request->expectsJson()
         );
 
-        $exceptions->render(function (AuthenticationException $exception, Request $request) {
-            if (! $request->is('api/*')) {
-                return null;
+        // Tangkap Unauthenticated Exception & Route [login] not defined untuk API
+        $exceptions->render(function (AuthenticationException|RouteNotFoundException $exception, Request $request) {
+            if ($request->is('api/*') || $exception instanceof AuthenticationException) {
+                return response()->json([
+                    'message' => 'Unauthenticated.',
+                    'code' => 401,
+                    'data' => null,
+                    'errors' => null,
+                ], 401);
             }
 
-            return response()->json([
-                'message' => 'Unauthenticated.',
-                'code' => 401,
-                'data' => null,
-                'errors' => null,
-            ], 401);
+            return null;
         });
 
         $exceptions->render(function (ValidationException $exception, Request $request) {
