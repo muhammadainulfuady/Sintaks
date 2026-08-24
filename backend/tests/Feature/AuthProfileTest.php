@@ -197,15 +197,15 @@ class AuthProfileTest extends TestCase
             ->assertJsonPath('data', null);
     }
 
-    public function test_user_seeder_creates_one_admin_and_two_regular_users(): void
+    public function test_user_seeder_creates_one_admin_and_four_regular_users(): void
     {
         $this->seed(UserSeeder::class);
 
-        $this->assertDatabaseCount('users', 3);
+        $this->assertDatabaseCount('users', 5);
         $this->assertDatabaseHas('users', [
             'email' => 'admin@sintaks.id',
             'role' => 'admin',
         ]);
-        $this->assertSame(2, User::where('role', 'user')->count());
+        $this->assertSame(4, User::where('role', 'user')->count());
     }
 }

@@ -11,6 +11,8 @@ use App\Models\TestCase;
 use App\Models\Community;
 use App\Models\CommunityMember;
 use App\Models\CommunityMessage;
+use App\Models\Note;
+use App\Models\XPTransaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,169 +20,199 @@ class QuizAndCommunitySeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. User Dummy
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@sintaks.id'],
-            [
-                'name' => 'Admin Sintaks',
-                'username' => 'admin_sintaks',
-                'password' => Hash::make('password123'),
-                'role' => 'admin',
-                'avatar' => 'avatar_admin',
-                'total_xp' => 1000,
-            ]
-        );
+        // 1. Fetch User Models
+        $users = User::all();
+        $admin = $users->firstWhere('email', 'admin@sintaks.id') ?? $users[0];
+        $user1 = $users->firstWhere('email', 'ainul@example.com') ?? $users[1];
+        $user2 = $users->firstWhere('email', 'budi@example.com') ?? $users[2];
+        $user3 = $users->firstWhere('email', 'citra@example.com') ?? $users[3] ?? $user1;
+        $user4 = $users->firstWhere('email', 'dewi@example.com') ?? $users[4] ?? $user2;
 
-        $user1 = User::firstOrCreate(
-            ['email' => 'ainul@example.com'],
-            [
-                'name' => 'Ainul Fuady',
-                'username' => 'ainulfuady',
-                'password' => Hash::make('password123'),
-                'role' => 'user',
-                'avatar' => 'avatar_01',
-                'total_xp' => 150,
-            ]
-        );
+        // 2. Fetch Modules
+        $modules = DB::table('modules')->get();
 
-        $user2 = User::firstOrCreate(
-            ['email' => 'budi@example.com'],
-            [
-                'name' => 'Budi Coder',
-                'username' => 'budi_coder',
-                'password' => Hash::make('password123'),
-                'role' => 'user',
-                'avatar' => 'avatar_02',
-                'total_xp' => 80,
-            ]
-        );
+        // Ensure at least 5 quizzes
+        foreach ($modules->take(5) as $moduleIndex => $module) {
+            $quiz = Quiz::firstOrCreate(
+                ['module_id' => $module->id],
+                [
+                    'title' => "Quiz: {$module->title}",
+                    'description' => "Uji pemahamanmu tentang materi {$module->title}.",
+                    'passing_score' => 70,
+                    'is_active' => true,
+                ]
+            );
 
-        // 2. Learning Path & Module Dummy (via DB Table)
-        $pathId = DB::table('learning_paths')->where('slug', 'python')->value('id');
-        if (!$pathId) {
-            $pathId = DB::table('learning_paths')->insertGetId([
-                'name' => 'Python',
-                'slug' => 'python',
-                'description' => 'Belajar Python dari dasar hingga mahir.',
-                'icon' => 'python_icon',
-                'is_active' => true,
-                'order' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            // Create 5 questions per quiz
+            // Q1: Theory Multiple Choice
+            $q1 = QuizQuestion::firstOrCreate(
+                ['quiz_id' => $quiz->id, 'order' => 1],
+                [
+                    'type' => 'theory',
+                    'question' => 'Apa tipe data bawaan Python untuk menyimpan urutan angka bulat?',
+                    'explanation' => 'Tipe data int (integer) digunakan untuk menyimpan bilangan bulat.',
+                    'language' => 'python',
+                    'is_active' => true,
+                ]
+            );
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q1->id, 'label' => 'A'], ['content' => "<class 'int'>", 'is_correct' => true, 'order' => 1]);
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q1->id, 'label' => 'B'], ['content' => "<class 'str'>", 'is_correct' => false, 'order' => 2]);
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q1->id, 'label' => 'C'], ['content' => "<class 'float'>", 'is_correct' => false, 'order' => 3]);
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q1->id, 'label' => 'D'], ['content' => "<class 'bool'>", 'is_correct' => false, 'order' => 4]);
+
+            // Q2: Theory Multiple Choice
+            $q2 = QuizQuestion::firstOrCreate(
+                ['quiz_id' => $quiz->id, 'order' => 2],
+                [
+                    'type' => 'theory',
+                    'question' => 'Simbol apa yang digunakan untuk menuliskan komentar satu baris di Python?',
+                    'explanation' => 'Karakter pagar (#) digunakan untuk komentar satu baris.',
+                    'language' => 'python',
+                    'is_active' => true,
+                ]
+            );
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q2->id, 'label' => 'A'], ['content' => '#', 'is_correct' => true, 'order' => 1]);
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q2->id, 'label' => 'B'], ['content' => '//', 'is_correct' => false, 'order' => 2]);
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q2->id, 'label' => 'C'], ['content' => '/*', 'is_correct' => false, 'order' => 3]);
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q2->id, 'label' => 'D'], ['content' => '<!--', 'is_correct' => false, 'order' => 4]);
+
+            // Q3: Code Writing (Ketik Kode)
+            $q3 = QuizQuestion::firstOrCreate(
+                ['quiz_id' => $quiz->id, 'order' => 3],
+                [
+                    'type' => 'code_writing',
+                    'question' => "Buatlah program Python yang mencetak teks 'Sintaks Python' ke layar.",
+                    'starter_code' => "# Tulis kode Python kamu di bawah ini\n",
+                    'language' => 'python',
+                    'time_limit_seconds' => 10,
+                    'memory_limit_mb' => 64,
+                    'is_active' => true,
+                ]
+            );
+            TestCase::firstOrCreate(['quiz_question_id' => $q3->id, 'order' => 1], ['input' => null, 'expected_output' => 'Sintaks Python', 'is_hidden' => false]);
+            TestCase::firstOrCreate(['quiz_question_id' => $q3->id, 'order' => 2], ['input' => null, 'expected_output' => 'Sintaks Python', 'is_hidden' => true]);
+
+            // Q4: Code Completion (Lengkapi Kode)
+            $q4 = QuizQuestion::firstOrCreate(
+                ['quiz_id' => $quiz->id, 'order' => 4],
+                [
+                    'type' => 'code_completion',
+                    'question' => 'Lengkapi kode berikut agar mencetak angka 0 sampai 4:',
+                    'code_template' => "___BLANK_1___ i in ___BLANK_2___:\n    print(i)",
+                    'language' => 'python',
+                    'time_limit_seconds' => 10,
+                    'memory_limit_mb' => 64,
+                    'is_active' => true,
+                ]
+            );
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q4->id, 'content' => 'for'], ['label' => null, 'is_correct' => true, 'order' => 1]);
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q4->id, 'content' => 'while'], ['label' => null, 'is_correct' => false, 'order' => 2]);
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q4->id, 'content' => 'range(5)'], ['label' => null, 'is_correct' => true, 'order' => 3]);
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q4->id, 'content' => 'range(4)'], ['label' => null, 'is_correct' => false, 'order' => 4]);
+            TestCase::firstOrCreate(['quiz_question_id' => $q4->id, 'order' => 1], ['input' => null, 'expected_output' => "0\n1\n2\n3\n4", 'is_hidden' => false]);
+
+            // Q5: Theory Multiple Choice
+            $q5 = QuizQuestion::firstOrCreate(
+                ['quiz_id' => $quiz->id, 'order' => 5],
+                [
+                    'type' => 'theory',
+                    'question' => 'Fungsi mana yang digunakan untuk mengkonversi nilai menjadi teks (string)?',
+                    'explanation' => 'Fungsi str() mengkonversi objek menjadi tipe data String.',
+                    'language' => 'python',
+                    'is_active' => true,
+                ]
+            );
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q5->id, 'label' => 'A'], ['content' => 'str()', 'is_correct' => true, 'order' => 1]);
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q5->id, 'label' => 'B'], ['content' => 'int()', 'is_correct' => false, 'order' => 2]);
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q5->id, 'label' => 'C'], ['content' => 'text()', 'is_correct' => false, 'order' => 3]);
+            QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q5->id, 'label' => 'D'], ['content' => 'toString()', 'is_correct' => false, 'order' => 4]);
         }
 
-        $moduleId = DB::table('modules')->where('slug', 'python-fundamentals')->value('id');
-        if (!$moduleId) {
-            $moduleId = DB::table('modules')->insertGetId([
-                'learning_path_id' => $pathId,
-                'title' => 'Python Fundamentals',
-                'slug' => 'python-fundamentals',
-                'description' => 'Dasar-dasar sintaks Python.',
-                'order' => 1,
-                'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        // 3. Create 5 Communities
+        $communitiesData = [
+            ['name' => 'Belajar Python Bareng', 'description' => 'Komunitas belajar Python dari dasar hingga mahir untuk pemula dan umum.', 'owner' => $admin],
+            ['name' => 'Python Pemula Indonesia', 'description' => 'Tempat berdiskusi, bertanya, dan berkolaborasi sesama pembelajar Python di Indonesia.', 'owner' => $user1],
+            ['name' => 'Django & Web Development', 'description' => 'Diskusi seputar pengembangan aplikasi web backend menggunakan framework Django dan FastAPI.', 'owner' => $user2],
+            ['name' => 'Automation & Web Scraping', 'description' => 'Komunitas otomatisasi tugas harian dan ekstraksi data web dengan Python.', 'owner' => $user3],
+            ['name' => 'Data Science & AI Club', 'description' => 'Wadah eksplorasi analisis data, Machine Learning, dan Generative AI Prompting.', 'owner' => $user4],
+        ];
+
+        foreach ($communitiesData as $cIndex => $cData) {
+            $comm = Community::firstOrCreate(
+                ['name' => $cData['name']],
+                [
+                    'owner_id' => $cData['owner']->id,
+                    'description' => $cData['description'],
+                ]
+            );
+
+            // Add all 5 users to each community with allowed enum values ('owner', 'member')
+            foreach ($users as $uIndex => $userObj) {
+                $role = ($userObj->id === $cData['owner']->id) ? 'owner' : 'member';
+                CommunityMember::firstOrCreate(
+                    ['community_id' => $comm->id, 'user_id' => $userObj->id],
+                    ['role' => $role, 'joined_at' => now()->subDays(5 - $uIndex)]
+                );
+            }
+
+            // Create 5 Messages per community
+            $messages = [
+                "Halo semuanya! Selamat datang di grup {$comm->name}.",
+                "Halo! Senang sekali bisa bergabung di komunitas ini.",
+                "Ada yang punya rekomendasi materi belajar Python yang bagus?",
+                "Kalian bisa cek modul dan kuis interaktif di platform Sintaks ini!",
+                "Semangat belajar semuanya! Jangan ragu buat tanya kalau ada error.",
+            ];
+
+            foreach ($messages as $mIndex => $msgText) {
+                $msgSender = $users[$mIndex % count($users)];
+                CommunityMessage::firstOrCreate(
+                    [
+                        'community_id' => $comm->id,
+                        'user_id' => $msgSender->id,
+                        'content' => $msgText,
+                    ],
+                    ['created_at' => now()->subHours(10 - $mIndex)]
+                );
+            }
         }
 
-        // 3. Quiz Dummy
-        $quiz = Quiz::firstOrCreate(
-            ['module_id' => $moduleId],
-            [
-                'title' => 'Quiz: Python Fundamentals',
-                'description' => 'Uji pemahamanmu tentang dasar-dasar sintaks Python.',
-                'passing_score' => 70,
-                'is_active' => true,
-            ]
-        );
+        // 4. Create 5 Notes
+        $notesData = [
+            ['title' => 'Catatan Indentasi Python', 'content' => 'Python wajib menggunakan 4 spasi untuk indentasi. Jangan campur tab dan spasi!'],
+            ['title' => 'Perbedaan List vs Tuple', 'content' => 'List bersifat mutable (bisa diubah), sedangkan Tuple bersifat immutable (tidak bisa diubah).'],
+            ['title' => 'Tips Perulangan For', 'content' => 'Gunakan range(start, stop, step) untuk mengontrol urutan angka pada for loop.'],
+            ['title' => 'Kunci Sukses Fungsi', 'content' => 'Selalu gunakan default argument di bagian akhir parameter fungsi.'],
+            ['title' => 'Konsep OOP Dasar', 'content' => 'Class adalah cetakan (blueprint), sedangkan Object adalah bentuk nyata (instance) dari class.'],
+        ];
 
-        // Soal 1: Theory (Pilihan Ganda)
-        $q1 = QuizQuestion::firstOrCreate(
-            ['quiz_id' => $quiz->id, 'order' => 1],
-            [
-                'type' => 'theory',
-                'question' => 'Apa output dari fungsi print(type(10)) di Python?',
-                'explanation' => 'Angka 10 di Python adalah tipe data integer (<class \'int\'>).',
-                'language' => 'python',
-                'is_active' => true,
-            ]
-        );
+        foreach ($notesData as $nIndex => $nData) {
+            Note::firstOrCreate(
+                ['title' => $nData['title'], 'user_id' => $user1->id],
+                [
+                    'content' => $nData['content'],
+                    'created_at' => now()->subDays($nIndex),
+                ]
+            );
+        }
 
-        QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q1->id, 'label' => 'A'], ['content' => "<class 'int'>", 'is_correct' => true, 'order' => 1]);
-        QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q1->id, 'label' => 'B'], ['content' => "<class 'str'>", 'is_correct' => false, 'order' => 2]);
-        QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q1->id, 'label' => 'C'], ['content' => "<class 'float'>", 'is_correct' => false, 'order' => 3]);
-        QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q1->id, 'label' => 'D'], ['content' => "<class 'bool'>", 'is_correct' => false, 'order' => 4]);
+        // 5. Create 5 XP Transactions
+        $xpData = [
+            ['user' => $admin, 'amount' => 500, 'source' => 'lesson_completion', 'description' => 'Menyelesaikan Modul Python Fundamentals'],
+            ['user' => $user1, 'amount' => 150, 'source' => 'quiz_completion', 'description' => 'Lulus Quiz Python Fundamentals dengan nilai sempurna'],
+            ['user' => $user2, 'amount' => 100, 'source' => 'lesson_completion', 'description' => 'Menyelesaikan Pelajaran Operator Aritmatika'],
+            ['user' => $user3, 'amount' => 80, 'source' => 'quiz_completion', 'description' => 'Lulus Quiz Operator'],
+            ['user' => $user4, 'amount' => 50, 'source' => 'lesson_completion', 'description' => 'Menyelesaikan Pelajaran Apa itu Python'],
+        ];
 
-        // Soal 2: Code Writing (Ketik Kode)
-        $q2 = QuizQuestion::firstOrCreate(
-            ['quiz_id' => $quiz->id, 'order' => 2],
-            [
-                'type' => 'code_writing',
-                'question' => "Buatlah program Python yang mencetak teks 'Hello, World!' ke layar.",
-                'starter_code' => "# Tulis kode Python kamu di bawah ini\n",
-                'language' => 'python',
-                'time_limit_seconds' => 10,
-                'memory_limit_mb' => 64,
-                'is_active' => true,
-            ]
-        );
-
-        TestCase::firstOrCreate(['quiz_question_id' => $q2->id, 'order' => 1], ['input' => null, 'expected_output' => 'Hello, World!', 'is_hidden' => false]);
-        TestCase::firstOrCreate(['quiz_question_id' => $q2->id, 'order' => 2], ['input' => null, 'expected_output' => 'Hello, World!', 'is_hidden' => true]);
-
-        // Soal 3: Code Completion (Lengkapi Kode)
-        $q3 = QuizQuestion::firstOrCreate(
-            ['quiz_id' => $quiz->id, 'order' => 3],
-            [
-                'type' => 'code_completion',
-                'question' => 'Lengkapi kode berikut agar mencetak angka 0 sampai 4:',
-                'code_template' => "___BLANK_1___ i in ___BLANK_2___:\n    print(i)",
-                'language' => 'python',
-                'time_limit_seconds' => 10,
-                'memory_limit_mb' => 64,
-                'is_active' => true,
-            ]
-        );
-
-        QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q3->id, 'content' => 'for'], ['label' => null, 'is_correct' => true, 'order' => 1]);
-        QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q3->id, 'content' => 'while'], ['label' => null, 'is_correct' => false, 'order' => 2]);
-        QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q3->id, 'content' => 'range(5)'], ['label' => null, 'is_correct' => true, 'order' => 3]);
-        QuizQuestionOption::firstOrCreate(['quiz_question_id' => $q3->id, 'content' => 'range(4)'], ['label' => null, 'is_correct' => false, 'order' => 4]);
-
-        TestCase::firstOrCreate(['quiz_question_id' => $q3->id, 'order' => 1], ['input' => null, 'expected_output' => "0\n1\n2\n3\n4", 'is_hidden' => false]);
-
-        // 4. Community Dummy
-        $comm1 = Community::firstOrCreate(
-            ['name' => 'Belajar Python Bareng'],
-            [
-                'owner_id' => $user1->id,
-                'description' => 'Komunitas belajar Python dari dasar hingga mahir.',
-            ]
-        );
-
-        $comm2 = Community::firstOrCreate(
-            ['name' => 'Python Pemula Indonesia'],
-            [
-                'owner_id' => $user2->id,
-                'description' => 'Tempat bertanya dan berdiskusi untuk pemula Python.',
-            ]
-        );
-
-        // Memberships
-        CommunityMember::firstOrCreate(['community_id' => $comm1->id, 'user_id' => $user1->id], ['role' => 'owner', 'joined_at' => now()]);
-        CommunityMember::firstOrCreate(['community_id' => $comm1->id, 'user_id' => $user2->id], ['role' => 'member', 'joined_at' => now()]);
-        CommunityMember::firstOrCreate(['community_id' => $comm2->id, 'user_id' => $user2->id], ['role' => 'owner', 'joined_at' => now()]);
-
-        // Messages
-        CommunityMessage::firstOrCreate(
-            ['community_id' => $comm1->id, 'content' => 'Halo semuanya! Selamat datang di komunitas Belajar Python Bareng.'],
-            ['user_id' => $user1->id]
-        );
-
-        CommunityMessage::firstOrCreate(
-            ['community_id' => $comm1->id, 'content' => 'Halo Mas Ainul! Senang bisa bergabung di komunitas ini.'],
-            ['user_id' => $user2->id]
-        );
+        foreach ($xpData as $xpItem) {
+            XPTransaction::create([
+                'user_id' => $xpItem['user']->id,
+                'amount' => $xpItem['amount'],
+                'source' => $xpItem['source'],
+                'description' => $xpItem['description'],
+                'created_at' => now(),
+            ]);
+        }
     }
 }
