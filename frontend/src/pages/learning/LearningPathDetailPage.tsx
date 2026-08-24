@@ -86,7 +86,7 @@ export const LearningPathDetailPage: React.FC = () => {
             Alur Pembelajaran
           </Link>
           <ChevronRight size={14} />
-          <span className="text-slate-900 font-semibold">{path.title}</span>
+          <span className="text-slate-900 font-semibold">{path.name || path.title}</span>
         </div>
 
         {/* Hero Path Header */}
@@ -96,7 +96,7 @@ export const LearningPathDetailPage: React.FC = () => {
               {path.level || 'Beginner'}
             </span>
             <h1 className="font-sans font-extrabold text-2xl sm:text-3xl text-slate-900 tracking-tight">
-              {path.title}
+              {path.name || path.title}
             </h1>
             <p className="text-sm text-slate-600 leading-relaxed font-body">
               {path.description}

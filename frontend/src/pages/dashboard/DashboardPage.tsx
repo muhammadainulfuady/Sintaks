@@ -169,7 +169,7 @@ export const DashboardPage: React.FC = () => {
                     </div>
 
                     <h3 className="font-sans font-bold text-lg text-slate-900 group-hover:text-indigo-600 transition-colors">
-                      {path.title}
+                      {path.name || path.title}
                     </h3>
                     <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
                       {path.description}

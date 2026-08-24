@@ -58,7 +58,7 @@ export const LearningPathsPage: React.FC = () => {
                   </div>
 
                   <h2 className="font-sans font-bold text-xl text-slate-900 group-hover:text-indigo-600 transition-colors">
-                    {path.title}
+                    {path.name || path.title}
                   </h2>
                   <p className="text-sm text-slate-600 leading-relaxed">
                     {path.description}

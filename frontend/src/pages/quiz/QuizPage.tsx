@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { PythonCodeEditor } from '../../components/editor/PythonCodeEditor';
 import { quizApi } from '../../api/quiz';
@@ -12,8 +12,6 @@ import {
   Zap,
   ArrowRight,
   Loader2,
-  ChevronRight,
-  HelpCircle,
 } from 'lucide-react';
 
 export const QuizPage: React.FC = () => {
@@ -21,13 +19,11 @@ export const QuizPage: React.FC = () => {
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [attempt, setAttempt] = useState<QuizAttempt | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string | number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<{ is_correct: boolean; explanation?: string } | null>(null);
   const [isQuizFinished, setIsQuizFinished] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -132,7 +128,7 @@ export const QuizPage: React.FC = () => {
               <span className="text-xs text-purple-600 font-semibold uppercase block flex items-center gap-1">
                 <Zap size={13} className="fill-purple-600" /> Bonus XP
               </span>
-              <span className="font-mono text-xl font-bold text-purple-700">+{quiz.total_xp_reward} XP</span>
+              <span className="font-mono text-xl font-bold text-purple-700">+{quiz.total_xp_reward || 100} XP</span>
             </div>
           </div>
 
@@ -167,7 +163,7 @@ export const QuizPage: React.FC = () => {
 
           <div className="flex items-center gap-1.5 text-xs font-bold text-purple-600 bg-purple-50 px-3 py-1.5 rounded-full border border-purple-100">
             <Zap size={14} className="fill-purple-600" />
-            <span>+{quiz.total_xp_reward} XP</span>
+            <span>+{quiz.total_xp_reward || 100} XP</span>
           </div>
         </div>
 
@@ -176,10 +172,14 @@ export const QuizPage: React.FC = () => {
           <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs space-y-6">
             <div className="space-y-2">
               <span className="px-3 py-1 bg-indigo-50 text-indigo-700 font-semibold text-xs rounded-full border border-indigo-100">
-                {currentQuestion.type === 'theory' ? 'Pilihan Ganda' : 'Ketik Kode Python'}
+                {currentQuestion.type === 'theory'
+                  ? 'Pilihan Ganda'
+                  : currentQuestion.type === 'code_completion'
+                  ? 'Lengkapi Kode Python'
+                  : 'Ketik Kode Python'}
               </span>
               <h3 className="font-sans font-bold text-lg sm:text-xl text-slate-900 leading-snug">
-                {currentQuestion.question_text}
+                {currentQuestion.question_text || currentQuestion.question}
               </h3>
             </div>
 
@@ -187,13 +187,17 @@ export const QuizPage: React.FC = () => {
             {currentQuestion.type === 'theory' && currentQuestion.options && (
               <div className="space-y-3">
                 {currentQuestion.options.map((opt) => {
-                  const isSelected = selectedOption === opt.order;
+                  const optionLabel = opt.label || String.fromCharCode(65 + (opt.order - 1));
+                  const optionText = opt.content || opt.option_text || '';
+                  const answerVal = opt.label || opt.content || opt.order;
+                  const isSelected = selectedOption === answerVal;
+
                   return (
                     <button
                       key={opt.id}
                       onClick={() => {
-                        setSelectedOption(opt.order);
-                        handleSubmitAnswer(opt.order);
+                        setSelectedOption(answerVal);
+                        handleSubmitAnswer(answerVal);
                       }}
                       disabled={isSubmitting || !!feedback}
                       className={`w-full text-left p-4 rounded-2xl border text-sm font-medium transition-all flex items-center justify-between ${
@@ -204,13 +208,52 @@ export const QuizPage: React.FC = () => {
                     >
                       <div className="flex items-center gap-3">
                         <span className="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 font-mono text-xs flex items-center justify-center font-bold">
-                          {String.fromCharCode(65 + (opt.order - 1))}
+                          {optionLabel}
                         </span>
-                        <span>{opt.option_text}</span>
+                        <span>{optionText}</span>
                       </div>
                     </button>
                   );
                 })}
+              </div>
+            )}
+
+            {/* Code Completion Quiz Component */}
+            {currentQuestion.type === 'code_completion' && (
+              <div className="space-y-4">
+                {currentQuestion.code_template && (
+                  <div className="p-4 bg-slate-900 rounded-xl font-mono text-xs text-slate-200 leading-relaxed overflow-x-auto whitespace-pre">
+                    {currentQuestion.code_template}
+                  </div>
+                )}
+                {currentQuestion.options && (
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold text-slate-600">Pilih Opsi Jawaban:</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      {currentQuestion.options.map((opt) => {
+                        const optText = opt.content || opt.option_text || '';
+                        const isSelected = selectedOption === optText;
+                        return (
+                          <button
+                            key={opt.id}
+                            onClick={() => {
+                              setSelectedOption(optText);
+                              handleSubmitAnswer(optText);
+                            }}
+                            disabled={isSubmitting || !!feedback}
+                            className={`p-3 rounded-xl border text-xs font-mono font-medium transition-all text-center ${
+                              isSelected
+                                ? 'border-indigo-600 bg-indigo-50 text-indigo-900 font-bold'
+                                : 'border-slate-200 hover:border-indigo-200 bg-white text-slate-800'
+                            }`}
+                          >
+                            {optText}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 

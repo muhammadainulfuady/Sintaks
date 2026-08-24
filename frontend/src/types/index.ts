@@ -18,11 +18,12 @@ export interface ApiResponse<T> {
 
 export interface LearningPath {
   id: number;
-  title: string;
+  name?: string;
+  title?: string;
   slug: string;
   description: string;
   icon?: string;
-  level: string;
+  level?: string;
   estimated_hours?: number;
   total_modules?: number;
   total_lessons?: number;
@@ -70,9 +71,11 @@ export interface Lesson {
 
 export interface QuizQuestionOption {
   id: number;
-  option_text: string;
+  option_text?: string;
+  content?: string;
+  label?: string;
   order: number;
-  // Note: is_correct is intentionally excluded from API response for students
+  is_correct?: boolean;
 }
 
 export interface TestCase {
@@ -86,10 +89,12 @@ export interface QuizQuestion {
   id: number;
   quiz_id: number;
   type: 'theory' | 'code_writing' | 'code_completion';
-  question_text: string;
+  question?: string;
+  question_text?: string;
   order: number;
   explanation?: string;
   starter_code?: string;
+  code_template?: string;
   options?: QuizQuestionOption[];
   test_cases?: TestCase[];
 }
@@ -99,7 +104,7 @@ export interface Quiz {
   module_id: number;
   title: string;
   passing_score: number;
-  total_xp_reward: number;
+  total_xp_reward?: number;
   questions: QuizQuestion[];
 }
 
@@ -130,10 +135,10 @@ export interface CodeExecutionResult {
 export interface Community {
   id: number;
   name: string;
-  slug: string;
+  slug?: string;
   description: string;
   icon?: string;
-  members_count: number;
+  members_count?: number;
   is_member?: boolean;
 }
 
@@ -143,14 +148,14 @@ export interface CommunityMessage {
   user_id: number;
   content: string;
   created_at: string;
-  user: User;
+  user?: User;
 }
 
 export interface Note {
   id: number;
   user_id: number;
   lesson_id?: number;
-  title: string;
+  title?: string;
   content: string;
   created_at: string;
   lesson?: {
