@@ -9,6 +9,7 @@ export const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -20,10 +21,16 @@ export const RegisterPage: React.FC = () => {
     e.preventDefault();
     setGeneralError(null);
     setFieldErrors({});
+
+    if (password !== passwordConfirmation) {
+      setFieldErrors({ password_confirmation: ['Konfirmasi password tidak sesuai dengan password.'] });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const res = await authApi.register(name, username, email, password);
+      const res = await authApi.register(name, username, email, password, passwordConfirmation);
       login(res.data.token, res.data.user);
       navigate('/dashboard');
     } catch (err: any) {
@@ -146,6 +153,28 @@ export const RegisterPage: React.FC = () => {
               />
               {fieldErrors.password && (
                 <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.password[0]}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                Konfirmasi Password
+              </label>
+              <input
+                type="password"
+                required
+                minLength={8}
+                value={passwordConfirmation}
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
+                placeholder="Ulangi password di atas"
+                className={`w-full text-sm px-3.5 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                  fieldErrors.password_confirmation
+                    ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
+                    : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
+                }`}
+              />
+              {fieldErrors.password_confirmation && (
+                <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.password_confirmation[0]}</p>
               )}
             </div>
 
