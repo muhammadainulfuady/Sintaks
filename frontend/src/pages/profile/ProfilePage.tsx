@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { useAuth } from '../../context/AuthContext';
 import { authApi } from '../../api/auth';
-import { User, Zap, Camera, Check, AlertCircle, Loader2 } from 'lucide-react';
+import { Zap, Check, AlertCircle, Loader2 } from 'lucide-react';
 
 export const ProfilePage: React.FC = () => {
   const { user, updateUser } = useAuth();
@@ -11,7 +11,8 @@ export const ProfilePage: React.FC = () => {
   const [selectedAvatar, setSelectedAvatar] = useState(user?.avatar || 'avatar_1');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [generalError, setGeneralError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
   const presetAvatars = [
     { id: 'avatar_1', name: 'Developer Default' },
@@ -24,7 +25,8 @@ export const ProfilePage: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
     setMessage(null);
-    setError(null);
+    setGeneralError(null);
+    setFieldErrors({});
 
     try {
       const res = await authApi.updateProfile({
@@ -35,7 +37,12 @@ export const ProfilePage: React.FC = () => {
       updateUser(res.data.user);
       setMessage('Profil berhasil diperbarui!');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Gagal memperbarui profil.');
+      if (err.response?.data?.errors) {
+        setFieldErrors(err.response.data.errors);
+        setGeneralError(err.response.data.message || 'Validasi gagal. Periksa input Anda.');
+      } else {
+        setGeneralError(err.response?.data?.message || 'Gagal memperbarui profil.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -72,15 +79,15 @@ export const ProfilePage: React.FC = () => {
         <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs space-y-6">
           {message && (
             <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs flex items-center gap-2">
-              <Check size={16} className="text-emerald-600" />
+              <Check size={16} className="text-emerald-600 flex-shrink-0" />
               <span>{message}</span>
             </div>
           )}
 
-          {error && (
+          {generalError && (
             <div className="p-3.5 bg-red-50 border border-red-200 text-red-800 rounded-xl text-xs flex items-center gap-2">
-              <AlertCircle size={16} className="text-red-600" />
-              <span>{error}</span>
+              <AlertCircle size={16} className="text-red-600 flex-shrink-0" />
+              <span>{generalError}</span>
             </div>
           )}
 
@@ -108,6 +115,9 @@ export const ProfilePage: React.FC = () => {
                   </button>
                 ))}
               </div>
+              {fieldErrors.avatar && (
+                <p className="text-red-600 text-xs mt-1.5 font-medium">{fieldErrors.avatar[0]}</p>
+              )}
             </div>
 
             <div>
@@ -119,8 +129,15 @@ export const ProfilePage: React.FC = () => {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full text-sm px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500"
+                className={`w-full text-sm px-3.5 py-2.5 bg-slate-50 border rounded-xl focus:outline-none transition-all ${
+                  fieldErrors.name
+                    ? 'border-red-400 focus:border-red-500'
+                    : 'border-slate-200 focus:border-indigo-500'
+                }`}
               />
+              {fieldErrors.name && (
+                <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.name[0]}</p>
+              )}
             </div>
 
             <div>
@@ -132,8 +149,15 @@ export const ProfilePage: React.FC = () => {
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full text-sm px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 font-mono"
+                className={`w-full text-sm px-3.5 py-2.5 bg-slate-50 border rounded-xl focus:outline-none font-mono transition-all ${
+                  fieldErrors.username
+                    ? 'border-red-400 focus:border-red-500'
+                    : 'border-slate-200 focus:border-indigo-500'
+                }`}
               />
+              {fieldErrors.username && (
+                <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.username[0]}</p>
+              )}
             </div>
 
             <div className="pt-2 flex justify-end">

@@ -7,7 +7,8 @@ import { Code2, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [generalError, setGeneralError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const { login } = useAuth();
@@ -15,7 +16,8 @@ export const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
+    setGeneralError(null);
+    setFieldErrors({});
     setIsLoading(true);
 
     try {
@@ -23,9 +25,12 @@ export const LoginPage: React.FC = () => {
       login(res.data.token, res.data.user);
       navigate('/dashboard');
     } catch (err: any) {
-      const errorMsg =
-        err.response?.data?.message || 'Login gagal. Periksa kembali email dan password Anda.';
-      setError(errorMsg);
+      if (err.response?.data?.errors) {
+        setFieldErrors(err.response.data.errors);
+        setGeneralError(err.response.data.message || 'Validasi gagal. Periksa kembali input Anda.');
+      } else {
+        setGeneralError(err.response?.data?.message || 'Login gagal. Periksa kembali email dan password Anda.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -49,10 +54,10 @@ export const LoginPage: React.FC = () => {
 
         {/* Form Card */}
         <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
-          {error && (
+          {generalError && (
             <div className="mb-5 p-3.5 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 flex items-center gap-2.5">
               <AlertCircle size={16} className="text-red-500 flex-shrink-0" />
-              <span>{error}</span>
+              <span>{generalError}</span>
             </div>
           )}
 
@@ -67,8 +72,15 @@ export const LoginPage: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="nama@email.com"
-                className="w-full text-sm px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all"
+                className={`w-full text-sm px-3.5 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                  fieldErrors.email
+                    ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
+                    : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
+                }`}
               />
+              {fieldErrors.email && (
+                <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.email[0]}</p>
+              )}
             </div>
 
             <div>
@@ -81,8 +93,15 @@ export const LoginPage: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full text-sm px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all"
+                className={`w-full text-sm px-3.5 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                  fieldErrors.password
+                    ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
+                    : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
+                }`}
               />
+              {fieldErrors.password && (
+                <p className="text-red-600 text-xs mt-1 font-medium">{fieldErrors.password[0]}</p>
+              )}
             </div>
 
             <button
