@@ -5,8 +5,6 @@ import { learningApi } from '../../api/learning';
 import { Module, Lesson } from '../../types';
 import {
   FileText,
-  CheckCircle,
-  Circle,
   ArrowRight,
   Loader2,
   ChevronRight,

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { communityApi } from '../../api/community';
 import { Community } from '../../types';
-import { Users, MessageSquare, ArrowRight, Loader2, UserPlus, Check } from 'lucide-react';
+import { Users, MessageSquare, Loader2, UserPlus, Check } from 'lucide-react';
 
 export const CommunityPage: React.FC = () => {
   const [communities, setCommunities] = useState<Community[]>([]);

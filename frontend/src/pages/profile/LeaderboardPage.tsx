@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { xpApi } from '../../api/xp';
 import { LeaderboardEntry } from '../../types';
-import { Zap, Award, Trophy, Loader2 } from 'lucide-react';
+import { Zap, Trophy, Loader2 } from 'lucide-react';
 
 export const LeaderboardPage: React.FC = () => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);

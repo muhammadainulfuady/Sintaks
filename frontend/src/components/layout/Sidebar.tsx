@@ -6,7 +6,6 @@ import {
   BookOpen,
   Bookmark,
   Users,
-  User as UserIcon,
   LogOut,
   Zap,
   Code2,

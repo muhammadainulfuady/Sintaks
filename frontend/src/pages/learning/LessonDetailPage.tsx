@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { NOVAPanel } from '../../components/nova/NOVAPanel';
 import { learningApi } from '../../api/learning';
 import { notesApi } from '../../api/notes';
 import { Lesson } from '../../types';
 import {
-  BookOpen,
   CheckCircle2,
   ChevronRight,
   Zap,
@@ -14,8 +13,6 @@ import {
   Code2,
   Sparkles,
   Loader2,
-  ExternalLink,
-  AlertTriangle,
   Lightbulb,
 } from 'lucide-react';
 
@@ -32,8 +29,6 @@ export const LessonDetailPage: React.FC = () => {
   const [noteTitle, setNoteTitle] = useState('');
   const [noteContent, setNoteContent] = useState('');
   const [isSavingNote, setIsSavingNote] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLessonDetail = async () => {

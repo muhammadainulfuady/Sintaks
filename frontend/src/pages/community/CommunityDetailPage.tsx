@@ -4,7 +4,7 @@ import { AppLayout } from '../../components/layout/AppLayout';
 import { communityApi } from '../../api/community';
 import { Community, CommunityMessage } from '../../types';
 import { useAuth } from '../../context/AuthContext';
-import { Users, Send, ChevronRight, Loader2, MessageSquare } from 'lucide-react';
+import { Users, Send, Loader2, MessageSquare } from 'lucide-react';
 
 export const CommunityDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
