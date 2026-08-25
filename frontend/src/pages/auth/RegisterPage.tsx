@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
 import { authApi } from '../../api/auth';
 import logoSintaks from '../../assets/logosintaks.png';
 
@@ -12,14 +11,15 @@ export const RegisterPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [generalError, setGeneralError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setGeneralError(null);
+    setSuccessMessage(null);
     setFieldErrors({});
     if (password !== passwordConfirmation) {
       setFieldErrors({ password_confirmation: ['Konfirmasi password tidak sesuai.'] });
@@ -27,9 +27,12 @@ export const RegisterPage: React.FC = () => {
     }
     setIsLoading(true);
     try {
-      const response = await authApi.register(name, username, email, password, passwordConfirmation);
-      login(response.data.token, response.data.user);
-      navigate('/dashboard');
+      await authApi.register(name, username, email, password, passwordConfirmation);
+      // Registration successful, show success message then redirect to login
+      setSuccessMessage('Akun berhasil dibuat! Silakan login dengan email dan password Anda.');
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
     } catch (err: any) {
       setFieldErrors(err.response?.data?.errors || {});
       setGeneralError(err.response?.data?.message || 'Pendaftaran gagal. Silakan coba lagi.');
@@ -53,6 +56,7 @@ export const RegisterPage: React.FC = () => {
             <h2 className="font-sans text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">Buat Akun</h2>
             <p className="mt-2 text-sm text-slate-500">Daftar menggunakan email dan password.</p>
             {generalError && <div className="mt-6 flex gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-700"><AlertCircle size={16} className="shrink-0" />{generalError}</div>}
+            {successMessage && <div className="mt-6 flex gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-700"><AlertCircle size={16} className="shrink-0" />{successMessage}</div>}
             <form onSubmit={handleSubmit} className="mt-7 space-y-4">
               <label className="block text-xs font-semibold text-slate-700">Nama
                 <input type="text" required value={name} onChange={(event) => setName(event.target.value)} placeholder="Nama lengkap" className={`mt-1.5 w-full rounded-xl border bg-slate-100 px-4 py-3 text-sm outline-none transition focus:ring-2 ${fieldErrors.name ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:border-indigo-500 focus:ring-indigo-100'}`} />

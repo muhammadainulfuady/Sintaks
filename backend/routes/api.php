@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LearningPathController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ModuleController;
@@ -28,6 +29,9 @@ Route::prefix('auth')->group(function (): void {
 });
 
 Route::middleware('auth:sanctum')->group(function (): void {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+
     // User Profile
     Route::get('/profile', [ProfileController::class, 'getProfile']);
     Route::put('/profile', [ProfileController::class, 'updateProfile']);

@@ -21,6 +21,15 @@ class NoteController extends Controller
         return $this->success('Daftar note berhasil diambil.', $notes);
     }
 
+    public function store(StoreNoteRequest $request): JsonResponse
+    {
+        $note = $request->user()->notes()->create([
+            'content' => $request->validated('content'),
+        ]);
+
+        return $this->success('Note berhasil disimpan.', $note->load('lesson:id,module_id,title,slug'), 201);
+    }
+
     public function storeForLesson(StoreNoteRequest $request, string $slug): JsonResponse
     {
         $lesson = Lesson::query()

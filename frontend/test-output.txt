@@ -1,0 +1,496 @@
+
+> frontend@0.0.0 test
+> playwright test
+
+
+Running 18 tests using 1 worker
+
+  Ô£ÿ   1 [chromium] ÔÇ║ tests\comprehensive.spec.ts:21:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 1. Landing Page - Verify structure and accessibility (10ms)
+  Ô£ÿ   2 [chromium] ÔÇ║ tests\comprehensive.spec.ts:46:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 2. Register Flow - Create new account (8ms)
+  Ô£ÿ   3 [chromium] ÔÇ║ tests\comprehensive.spec.ts:80:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 3. Login Flow - Authenticate user (6ms)
+  Ô£ÿ   4 [chromium] ÔÇ║ tests\comprehensive.spec.ts:106:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 4. Dashboard Page - Verify layout and content (5ms)
+  Ô£ÿ   5 [chromium] ÔÇ║ tests\comprehensive.spec.ts:130:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 5. Learning Paths - View and navigate paths (9ms)
+  Ô£ÿ   6 [chromium] ÔÇ║ tests\comprehensive.spec.ts:149:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 6. Modules & Lessons - Load lesson content (9ms)
+  Ô£ÿ   7 [chromium] ÔÇ║ tests\comprehensive.spec.ts:175:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 7. Quiz Feature - Take quiz and submit answers (10ms)
+  Ô£ÿ   8 [chromium] ÔÇ║ tests\comprehensive.spec.ts:206:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 8. Notes Feature - Create, edit, delete notes (5ms)
+  Ô£ÿ   9 [chromium] ÔÇ║ tests\comprehensive.spec.ts:233:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 9. Community Feature - Browse and post messages (7ms)
+  Ô£ÿ  10 [chromium] ÔÇ║ tests\comprehensive.spec.ts:253:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 10. Profile & Settings - View and update profile (8ms)
+  Ô£ÿ  11 [chromium] ÔÇ║ tests\comprehensive.spec.ts:281:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 11. Error Handling - Unauthorized access and invalid routes (9ms)
+  Ô£ÿ  12 [chromium] ÔÇ║ tests\comprehensive.spec.ts:309:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 12. Responsive Design - Desktop layout (6ms)
+  Ô£ÿ  13 [chromium] ÔÇ║ tests\comprehensive.spec.ts:322:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 12. Responsive Design - Tablet layout (13ms)
+  Ô£ÿ  14 [chromium] ÔÇ║ tests\comprehensive.spec.ts:330:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 12. Responsive Design - Mobile layout (7ms)
+  Ô£ÿ  15 [chromium] ÔÇ║ tests\comprehensive.spec.ts:343:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 13. Performance - Page load metrics (7ms)
+  Ô£ÿ  16 [chromium] ÔÇ║ tests\comprehensive.spec.ts:361:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 14. Accessibility - Keyboard navigation (5ms)
+  Ô£ÿ  17 [chromium] ÔÇ║ tests\comprehensive.spec.ts:375:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 14. Accessibility - Color contrast (5ms)
+  Ô£ÿ  18 [chromium] ÔÇ║ tests\comprehensive.spec.ts:386:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 14. Accessibility - Form labels (7ms)
+
+
+  1) [chromium] ÔÇ║ tests\comprehensive.spec.ts:21:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 1. Landing Page - Verify structure and accessibility 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-676fa-structure-and-accessibility-chromium\error-context.md
+
+  2) [chromium] ÔÇ║ tests\comprehensive.spec.ts:46:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 2. Register Flow - Create new account 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-031fe-r-Flow---Create-new-account-chromium\error-context.md
+
+  3) [chromium] ÔÇ║ tests\comprehensive.spec.ts:80:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 3. Login Flow - Authenticate user 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-3dcfe-in-Flow---Authenticate-user-chromium\error-context.md
+
+  4) [chromium] ÔÇ║ tests\comprehensive.spec.ts:106:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 4. Dashboard Page - Verify layout and content 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-85cb3---Verify-layout-and-content-chromium\error-context.md
+
+  5) [chromium] ÔÇ║ tests\comprehensive.spec.ts:130:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 5. Learning Paths - View and navigate paths 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-2ac70-s---View-and-navigate-paths-chromium\error-context.md
+
+  6) [chromium] ÔÇ║ tests\comprehensive.spec.ts:149:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 6. Modules & Lessons - Load lesson content 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-30d96-ssons---Load-lesson-content-chromium\error-context.md
+
+  7) [chromium] ÔÇ║ tests\comprehensive.spec.ts:175:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 7. Quiz Feature - Take quiz and submit answers 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-47e23-ake-quiz-and-submit-answers-chromium\error-context.md
+
+  8) [chromium] ÔÇ║ tests\comprehensive.spec.ts:206:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 8. Notes Feature - Create, edit, delete notes 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-a12e6----Create-edit-delete-notes-chromium\error-context.md
+
+  9) [chromium] ÔÇ║ tests\comprehensive.spec.ts:233:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 9. Community Feature - Browse and post messages 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-f5729----Browse-and-post-messages-chromium\error-context.md
+
+  10) [chromium] ÔÇ║ tests\comprehensive.spec.ts:253:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 10. Profile & Settings - View and update profile 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-9c365-s---View-and-update-profile-chromium\error-context.md
+
+  11) [chromium] ÔÇ║ tests\comprehensive.spec.ts:281:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 11. Error Handling - Unauthorized access and invalid routes 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-153c9-d-access-and-invalid-routes-chromium\error-context.md
+
+  12) [chromium] ÔÇ║ tests\comprehensive.spec.ts:309:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 12. Responsive Design - Desktop layout 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-8986c-ive-Design---Desktop-layout-chromium\error-context.md
+
+  13) [chromium] ÔÇ║ tests\comprehensive.spec.ts:322:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 12. Responsive Design - Tablet layout 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-05c0c-sive-Design---Tablet-layout-chromium\error-context.md
+
+  14) [chromium] ÔÇ║ tests\comprehensive.spec.ts:330:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 12. Responsive Design - Mobile layout 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-464db-sive-Design---Mobile-layout-chromium\error-context.md
+
+  15) [chromium] ÔÇ║ tests\comprehensive.spec.ts:343:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 13. Performance - Page load metrics 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-9df91-ormance---Page-load-metrics-chromium\error-context.md
+
+  16) [chromium] ÔÇ║ tests\comprehensive.spec.ts:361:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 14. Accessibility - Keyboard navigation 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-3fadd-ility---Keyboard-navigation-chromium\error-context.md
+
+  17) [chromium] ÔÇ║ tests\comprehensive.spec.ts:375:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 14. Accessibility - Color contrast 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-5d15e-essibility---Color-contrast-chromium\error-context.md
+
+  18) [chromium] ÔÇ║ tests\comprehensive.spec.ts:386:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 14. Accessibility - Form labels 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\ASUS\AppData\Local\ms-playwright\chromium_headless_shell-1234\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ÔòöÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòù
+    Ôòæ Looks like Playwright was just installed or updated.       Ôòæ
+    Ôòæ Please run the following command to download new browsers: Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ     npx playwright install                                 Ôòæ
+    Ôòæ                                                            Ôòæ
+    Ôòæ <3 Playwright Team                                         Ôòæ
+    ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      15 |
+      16 |   test.afterEach(async () => {
+    > 17 |     await page.close();
+         |                ^
+      18 |   });
+      19 |
+      20 |   // TEST 1: Landing Page
+        at D:\lomba\Sintaks\frontend\tests\comprehensive.spec.ts:17:16
+
+    Error Context: test-results\comprehensive-Sintaks-Fron-59384-Accessibility---Form-labels-chromium\error-context.md
+
+  18 failed
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:21:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 1. Landing Page - Verify structure and accessibility 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:46:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 2. Register Flow - Create new account 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:80:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 3. Login Flow - Authenticate user 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:106:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 4. Dashboard Page - Verify layout and content 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:130:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 5. Learning Paths - View and navigate paths 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:149:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 6. Modules & Lessons - Load lesson content 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:175:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 7. Quiz Feature - Take quiz and submit answers 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:206:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 8. Notes Feature - Create, edit, delete notes 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:233:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 9. Community Feature - Browse and post messages 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:253:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 10. Profile & Settings - View and update profile 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:281:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 11. Error Handling - Unauthorized access and invalid routes 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:309:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 12. Responsive Design - Desktop layout 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:322:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 12. Responsive Design - Tablet layout 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:330:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 12. Responsive Design - Mobile layout 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:343:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 13. Performance - Page load metrics 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:361:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 14. Accessibility - Keyboard navigation 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:375:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 14. Accessibility - Color contrast 
+    [chromium] ÔÇ║ tests\comprehensive.spec.ts:386:3 ÔÇ║ Sintaks Frontend - Comprehensive Testing ÔÇ║ 14. Accessibility - Form labels 

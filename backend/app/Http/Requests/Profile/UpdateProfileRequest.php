@@ -15,8 +15,9 @@ class UpdateProfileRequest extends ApiFormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:100'],
+            'name' => ['sometimes', 'required', 'string', 'max:100'],
             'username' => [
+                'sometimes',
                 'required',
                 'string',
                 'max:50',

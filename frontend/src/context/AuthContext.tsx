@@ -17,7 +17,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(() => {
     const saved = localStorage.getItem('sintaks_user');
-    return saved ? JSON.parse(saved) : null;
+    return saved && saved !== 'undefined' ? JSON.parse(saved) : null;
   });
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('sintaks_token'));
   const [isLoading, setIsLoading] = useState<boolean>(true);
