@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -21,6 +22,20 @@ class XPController extends Controller
                 'total_xp' => (int) $user->total_xp,
                 'transactions' => $transactions,
             ],
+            'errors' => null,
+        ]);
+    }
+
+    public function getLeaderboard(): JsonResponse
+    {
+        $leaderboard = User::orderByDesc('total_xp')
+            ->take(100)
+            ->get(['id', 'name', 'username', 'avatar', 'total_xp']);
+
+        return response()->json([
+            'message' => 'Leaderboard berhasil diambil.',
+            'code' => 200,
+            'data' => $leaderboard,
             'errors' => null,
         ]);
     }
