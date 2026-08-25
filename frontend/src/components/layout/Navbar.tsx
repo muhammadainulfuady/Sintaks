@@ -19,6 +19,8 @@ export const Navbar: React.FC = () => {
   const location = useLocation();
   const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [avatarError, setAvatarError] = useState(false); // State baru untuk menangani error gambar
+
   const isActive = (path: string) => path === '/dashboard' ? location.pathname === path : location.pathname.startsWith(path);
 
   return (
@@ -47,9 +49,22 @@ export const Navbar: React.FC = () => {
             <Zap size={14} className="fill-violet-600" /> {user?.total_xp || 0} XP
           </div>
           <Link to="/profile" className="flex items-center gap-2 text-right">
-            <div className="hidden md:block"><p className="max-w-28 truncate text-xs font-bold text-slate-800">{user?.name}</p><p className="max-w-28 truncate text-[11px] text-slate-500">@{user?.username}</p></div>
+            <div className="hidden md:block">
+              <p className="max-w-28 truncate text-xs font-bold text-slate-800">{user?.name}</p>
+              <p className="max-w-28 truncate text-[11px] text-slate-500">@{user?.username}</p>
+            </div>
             <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-indigo-200 bg-indigo-100 text-sm font-bold text-indigo-700">
-              {user?.avatar ? <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" /> : user?.name?.charAt(0).toUpperCase()}
+              {/* Logika Avatar yang sudah diperbarui */}
+              {user?.avatar && !avatarError ? (
+                <img 
+                  src={user.avatar} 
+                  alt={user.name} 
+                  className="h-full w-full object-cover" 
+                  onError={() => setAvatarError(true)} 
+                />
+              ) : (
+                user?.name?.charAt(0).toUpperCase()
+              )}
             </div>
           </Link>
           <button onClick={logout} title="Keluar" className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600"><LogOut size={18} /></button>
@@ -68,7 +83,10 @@ export const Navbar: React.FC = () => {
                 <Icon size={18} />{label}
               </Link>
             ))}
-            <div className="mt-2 flex items-center justify-between border-t border-slate-100 px-3 pt-3 sm:hidden"><Link to="/profile" onClick={() => setIsOpen(false)} className="text-sm font-semibold text-slate-700">Profil Saya</Link><button onClick={logout} className="text-sm font-semibold text-red-600">Keluar</button></div>
+            <div className="mt-2 flex items-center justify-between border-t border-slate-100 px-3 pt-3 sm:hidden">
+              <Link to="/profile" onClick={() => setIsOpen(false)} className="text-sm font-semibold text-slate-700">Profil Saya</Link>
+              <button onClick={logout} className="text-sm font-semibold text-red-600">Keluar</button>
+            </div>
           </div>
         </nav>
       )}
