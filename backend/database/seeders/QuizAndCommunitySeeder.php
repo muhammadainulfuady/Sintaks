@@ -232,13 +232,19 @@ class QuizAndCommunitySeeder extends Seeder
                 ]
             );
 
-            // Add all 5 users to each community with allowed enum values ('owner', 'member')
+            // Seed membership bervariasi agar alur join juga dapat dicoba dengan data dummy.
+            $communityMembers = [];
             foreach ($users as $uIndex => $userObj) {
+                if ($userObj->id !== $cData['owner']->id && ($uIndex + $cIndex) % 2 !== 0) {
+                    continue;
+                }
+
                 $role = ($userObj->id === $cData['owner']->id) ? 'owner' : 'member';
                 CommunityMember::firstOrCreate(
                     ['community_id' => $comm->id, 'user_id' => $userObj->id],
                     ['role' => $role, 'joined_at' => now()->subDays(5 - $uIndex)]
                 );
+                $communityMembers[] = $userObj;
             }
 
             // Create 5 Messages per community
@@ -251,7 +257,7 @@ class QuizAndCommunitySeeder extends Seeder
             ];
 
             foreach ($messages as $mIndex => $msgText) {
-                $msgSender = $users[$mIndex % count($users)];
+                $msgSender = $communityMembers[$mIndex % count($communityMembers)];
                 CommunityMessage::firstOrCreate(
                     [
                         'community_id' => $comm->id,

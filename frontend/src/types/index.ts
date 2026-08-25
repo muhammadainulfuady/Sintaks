@@ -140,6 +140,8 @@ export interface Community {
   icon?: string;
   members_count?: number;
   is_member?: boolean;
+  is_owner?: boolean;
+  owner?: Pick<User, 'id' | 'name' | 'username' | 'avatar'>;
 }
 
 export interface CommunityMessage {

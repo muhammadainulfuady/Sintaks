@@ -32,8 +32,8 @@ export const communityApi = {
     return res.data;
   },
 
-  postMessage: async (id: number, content: string): Promise<ApiResponse<{ message: CommunityMessage }>> => {
-    const res = await api.post<ApiResponse<{ message: CommunityMessage }>>(`/communities/${id}/messages`, { content });
+  postMessage: async (id: number, content: string): Promise<ApiResponse<CommunityMessage>> => {
+    const res = await api.post<ApiResponse<CommunityMessage>>(`/communities/${id}/messages`, { content });
     return res.data;
   },
 };

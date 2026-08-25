@@ -4,7 +4,7 @@ import { AppLayout } from '../../components/layout/AppLayout';
 import { communityApi } from '../../api/community';
 import { Community, CommunityMessage } from '../../types';
 import { useAuth } from '../../context/AuthContext';
-import { Users, Send, Loader2, MessageSquare } from 'lucide-react';
+import { Users, Send, Loader2, MessageSquare, UserPlus, LogOut, AlertCircle } from 'lucide-react';
 
 export const CommunityDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +16,8 @@ export const CommunityDetailPage: React.FC = () => {
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
+  const [isUpdatingMembership, setIsUpdatingMembership] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -23,12 +25,18 @@ export const CommunityDetailPage: React.FC = () => {
     if (!communityId) return;
     try {
       const commRes = await communityApi.getCommunity(communityId);
-      setCommunity(commRes.data);
+      const loadedCommunity = commRes.data;
+      setCommunity(loadedCommunity);
 
-      const msgRes = await communityApi.getMessages(communityId);
-      setMessages(msgRes.data.messages || []);
-    } catch (err) {
+      if (loadedCommunity.is_member) {
+        const msgRes = await communityApi.getMessages(communityId);
+        setMessages(msgRes.data.messages || []);
+      } else {
+        setMessages([]);
+      }
+    } catch (err: any) {
       console.error('Failed to load community detail:', err);
+      setError(err.response?.data?.message || 'Komunitas belum dapat dimuat. Coba lagi.');
     } finally {
       setIsLoading(false);
     }
@@ -48,12 +56,41 @@ export const CommunityDetailPage: React.FC = () => {
     setIsSending(true);
     try {
       const res = await communityApi.postMessage(communityId, inputText);
-      setMessages([...messages, res.data.message]);
+      setMessages((currentMessages) => [...currentMessages, res.data]);
       setInputText('');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to post message:', err);
+      setError(err.response?.data?.message || 'Pesan belum dapat dikirim. Coba lagi.');
     } finally {
       setIsSending(false);
+    }
+  };
+
+  const handleJoin = async () => {
+    setIsUpdatingMembership(true);
+    setError(null);
+    try {
+      await communityApi.joinCommunity(communityId);
+      await fetchCommunityData();
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Belum dapat bergabung ke komunitas.');
+    } finally {
+      setIsUpdatingMembership(false);
+    }
+  };
+
+  const handleLeave = async () => {
+    if (!community || !window.confirm(`Keluar dari ${community.name}?`)) return;
+
+    setIsUpdatingMembership(true);
+    setError(null);
+    try {
+      await communityApi.leaveCommunity(communityId);
+      await fetchCommunityData();
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Belum dapat keluar dari komunitas.');
+    } finally {
+      setIsUpdatingMembership(false);
     }
   };
 
@@ -103,11 +140,27 @@ export const CommunityDetailPage: React.FC = () => {
           >
             Semua Komunitas
           </Link>
+          {!community.is_member ? (
+            <button onClick={handleJoin} disabled={isUpdatingMembership} className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-sans font-semibold text-xs rounded-xl transition-colors inline-flex items-center gap-1.5">
+              {isUpdatingMembership ? <Loader2 size={14} className="animate-spin" /> : <UserPlus size={14} />} Gabung
+            </button>
+          ) : !community.is_owner ? (
+            <button onClick={handleLeave} disabled={isUpdatingMembership} className="px-3.5 py-1.5 bg-red-50 hover:bg-red-100 disabled:opacity-50 text-red-700 font-sans font-semibold text-xs rounded-xl transition-colors inline-flex items-center gap-1.5">
+              {isUpdatingMembership ? <Loader2 size={14} className="animate-spin" /> : <LogOut size={14} />} Keluar
+            </button>
+          ) : null}
         </div>
+
+        {error && <div className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-xs text-red-700"><AlertCircle size={15} />{error}</div>}
 
         {/* Messages List Area */}
         <div className="flex-1 bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 overflow-y-auto space-y-4 shadow-xs">
-          {messages.length === 0 ? (
+          {!community.is_member ? (
+            <div className="text-center py-16 space-y-2 text-slate-400">
+              <Users size={32} className="mx-auto text-slate-300" />
+              <p className="text-xs">Gabung komunitas ini untuk membaca dan mengirim pesan.</p>
+            </div>
+          ) : messages.length === 0 ? (
             <div className="text-center py-16 space-y-2 text-slate-400">
               <MessageSquare size={32} className="mx-auto text-slate-300" />
               <p className="text-xs">Belum ada pesan di komunitas ini. Mulai percakapan pertama!</p>
@@ -152,10 +205,7 @@ export const CommunityDetailPage: React.FC = () => {
         </div>
 
         {/* Input Box Bar */}
-        <form
-          onSubmit={handleSendMessage}
-          className="bg-white border border-slate-200 rounded-2xl p-3 shadow-xs flex items-center gap-3 flex-shrink-0"
-        >
+        {community.is_member && <form onSubmit={handleSendMessage} className="bg-white border border-slate-200 rounded-2xl p-3 shadow-xs flex items-center gap-3 flex-shrink-0">
           <input
             type="text"
             value={inputText}
@@ -171,7 +221,7 @@ export const CommunityDetailPage: React.FC = () => {
             {isSending ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
             <span className="hidden sm:inline">Kirim</span>
           </button>
-        </form>
+        </form>}
       </div>
     </AppLayout>
   );

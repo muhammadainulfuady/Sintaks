@@ -9,6 +9,7 @@ use App\Http\Requests\Community\CreateCommunityRequest;
 use App\Http\Requests\Community\SendCommunityMessageRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CommunityController extends Controller
 {
@@ -18,14 +19,14 @@ class CommunityController extends Controller
      */
     public function index(): JsonResponse
     {
-        $userId = auth()->id() ?? 1;
+        $userId = (int) auth()->id();
 
-        $communities = Community::with(['owner:id,username,avatar'])
+        $communities = Community::with(['owner:id,name,username,avatar'])
             ->withCount('memberRecords')
             ->get()
-            ->map(function ($community) use ($userId) {
+            ->map(function (Community $community) use ($userId) {
                 $isMember = $community->memberRecords()->where('user_id', $userId)->exists();
-                $isOwner = $community->owner_id === $userId;
+                $isOwner = (int) $community->owner_id === $userId;
 
                 return [
                     'id' => $community->id,
@@ -53,25 +54,29 @@ class CommunityController extends Controller
      */
     public function store(CreateCommunityRequest $request): JsonResponse
     {
-        $userId = auth()->id() ?? 1;
+        $userId = (int) auth()->id();
 
-        $community = Community::create([
-            'owner_id' => $userId,
-            'name' => $request->validated('name'),
-            'description' => $request->validated('description'),
-        ]);
+        $community = DB::transaction(function () use ($request, $userId): Community {
+            $community = Community::create([
+                'owner_id' => $userId,
+                'name' => $request->validated('name'),
+                'description' => $request->validated('description'),
+            ]);
 
-        CommunityMember::create([
-            'community_id' => $community->id,
-            'user_id' => $userId,
-            'role' => 'owner',
-            'joined_at' => now(),
-        ]);
+            CommunityMember::create([
+                'community_id' => $community->id,
+                'user_id' => $userId,
+                'role' => 'owner',
+                'joined_at' => now(),
+            ]);
+
+            return $community;
+        });
 
         return response()->json([
             'message' => 'Community berhasil dibuat.',
             'code' => 201,
-            'data' => $community->load('owner:id,username,avatar'),
+            'data' => $this->communityData($community->load('owner:id,name,username,avatar'), true, true),
             'errors' => null,
         ], 201);
     }
@@ -82,7 +87,8 @@ class CommunityController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $community = Community::with(['owner:id,username,avatar'])->withCount('memberRecords')->find($id);
+        $userId = (int) auth()->id();
+        $community = Community::with(['owner:id,name,username,avatar'])->withCount('memberRecords')->find($id);
 
         if (!$community) {
             return response()->json([
@@ -96,7 +102,11 @@ class CommunityController extends Controller
         return response()->json([
             'message' => 'Detail community berhasil diambil.',
             'code' => 200,
-            'data' => $community,
+            'data' => $this->communityData(
+                $community,
+                $community->memberRecords()->where('user_id', $userId)->exists(),
+                (int) $community->owner_id === $userId,
+            ),
             'errors' => null,
         ], 200);
     }
@@ -118,7 +128,7 @@ class CommunityController extends Controller
             ], 404);
         }
 
-        $userId = auth()->id() ?? 1;
+        $userId = (int) auth()->id();
 
         $isMember = CommunityMember::where('community_id', $id)->where('user_id', $userId)->exists();
 
@@ -163,9 +173,9 @@ class CommunityController extends Controller
             ], 404);
         }
 
-        $userId = auth()->id() ?? 1;
+        $userId = (int) auth()->id();
 
-        if ($community->owner_id === $userId) {
+        if ((int) $community->owner_id === $userId) {
             return response()->json([
                 'message' => 'Pemilik komunitas tidak dapat meninggalkan komunitas.',
                 'code' => 403,
@@ -174,7 +184,16 @@ class CommunityController extends Controller
             ], 403);
         }
 
-        CommunityMember::where('community_id', $id)->where('user_id', $userId)->delete();
+        $deleted = CommunityMember::where('community_id', $id)->where('user_id', $userId)->delete();
+
+        if ($deleted === 0) {
+            return response()->json([
+                'message' => 'Anda belum menjadi anggota komunitas ini.',
+                'code' => 409,
+                'data' => null,
+                'errors' => null,
+            ], 409);
+        }
 
         return response()->json([
             'message' => 'Berhasil meninggalkan community.',
@@ -201,7 +220,7 @@ class CommunityController extends Controller
             ], 404);
         }
 
-        $userId = auth()->id() ?? 1;
+        $userId = (int) auth()->id();
         $isMember = CommunityMember::where('community_id', $id)->where('user_id', $userId)->exists();
 
         if (!$isMember) {
@@ -213,10 +232,10 @@ class CommunityController extends Controller
             ], 403);
         }
 
-        $perPage = (int) $request->query('per_page', 20);
+        $perPage = min(max((int) $request->query('per_page', 20), 1), 100);
         $messages = CommunityMessage::where('community_id', $id)
-            ->with('user:id,username,avatar')
-            ->latest()
+            ->with('user:id,name,username,avatar')
+            ->oldest()
             ->paginate($perPage);
 
         return response()->json([
@@ -252,7 +271,7 @@ class CommunityController extends Controller
             ], 404);
         }
 
-        $userId = auth()->id() ?? 1;
+        $userId = (int) auth()->id();
         $isMember = CommunityMember::where('community_id', $id)->where('user_id', $userId)->exists();
 
         if (!$isMember) {
@@ -273,7 +292,7 @@ class CommunityController extends Controller
         return response()->json([
             'message' => 'Pesan berhasil dikirim.',
             'code' => 201,
-            'data' => $message->load('user:id,username,avatar'),
+            'data' => $message->load('user:id,name,username,avatar'),
             'errors' => null,
         ], 201);
     }
@@ -305,5 +324,24 @@ class CommunityController extends Controller
             'data' => $members,
             'errors' => null,
         ], 200);
+    }
+
+    /**
+     * Bentuk respons community yang konsisten untuk list, detail, dan hasil create.
+     *
+     * @return array<string, mixed>
+     */
+    private function communityData(Community $community, bool $isMember, bool $isOwner): array
+    {
+        return [
+            'id' => $community->id,
+            'name' => $community->name,
+            'description' => $community->description,
+            'owner' => $community->owner,
+            'members_count' => $community->member_records_count ?? $community->memberRecords()->count(),
+            'is_member' => $isMember,
+            'is_owner' => $isOwner,
+            'created_at' => $community->created_at,
+        ];
     }
 }

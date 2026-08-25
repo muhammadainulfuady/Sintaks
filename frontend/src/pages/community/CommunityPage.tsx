@@ -49,6 +49,13 @@ export const CommunityPage: React.FC = () => {
   }, []);
 
   const handleJoinLeave = async (comm: Community) => {
+    if (comm.is_owner) {
+      setActionMessage('Pemilik komunitas tidak dapat keluar dari komunitasnya sendiri.');
+      return;
+    }
+
+    if (comm.is_member && !window.confirm(`Keluar dari ${comm.name}?`)) return;
+
     try {
       setActionMessage(null);
       if (comm.is_member) {
@@ -137,13 +144,18 @@ export const CommunityPage: React.FC = () => {
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
                   <button
                     onClick={() => handleJoinLeave(comm)}
+                    disabled={comm.is_owner}
                     className={`px-3 py-1.5 rounded-xl font-sans font-semibold text-xs transition-colors flex items-center gap-1.5 ${
-                      comm.is_member
+                      comm.is_owner
+                        ? 'bg-slate-100 text-slate-500 border border-slate-200 cursor-not-allowed'
+                        : comm.is_member
                         ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-red-50 hover:text-red-700 hover:border-red-200'
                         : 'bg-indigo-50 text-indigo-700 border border-indigo-100 hover:bg-indigo-100'
                     }`}
                   >
-                    {comm.is_member ? (
+                    {comm.is_owner ? (
+                      <><Check size={14} /><span>Pemilik</span></>
+                    ) : comm.is_member ? (
                       <>
                         <Check size={14} />
                         <span>Keluar</span>
